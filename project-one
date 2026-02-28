@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: Supply Chain Optimization | Unochi Farah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root { --deep-red: #8B0000; --dark-black: #0a0a0a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: var(--dark-black); }
+        h1, h2, h3, h4, .serif { font-family: 'DM Serif Display', serif; }
+        .text-accent { color: var(--deep-red); }
+        .bg-accent { background-color: var(--deep-red); }
+        .bg-dark { background-color: var(--dark-black); }
+        .stat-card { border-left: 3px solid var(--deep-red); padding-left: 1.5rem; }
+    </style>
+</head>
+<body class="bg-white">
+
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 px-6 py-5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xl font-extrabold tracking-tighter uppercase">Unochi Farah<span class="text-accent">.</span></a>
+            <a href="index.html#work" class="text-[10px] uppercase tracking-[0.3em] font-bold hover:text-accent transition-colors">← Back to Projects</a>
+        </div>
+    </nav>
+
+    <header class="pt-40 pb-20 px-6 bg-gray-50 border-b border-gray-100">
+        <div class="max-w-4xl mx-auto" data-aos="fade-up">
+            <span class="text-accent font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">Executive Summary</span>
+            <h1 class="text-5xl md:text-7xl font-black mb-8 leading-[0.9] tracking-tighter">Reduced Fulfillment <br>Lag by <span class="text-accent italic">18.4%</span></h1>
+            
+            <div class="grid md:grid-cols-2 gap-10 mt-12">
+                <p class="text-lg text-gray-600 font-light leading-relaxed">
+                    Centralized 320k+ logistics records to identify hidden routing bottlenecks. This analysis directly informed a regional carrier-reallocation strategy that saved an estimated $140k in annual SLA penalties.
+                </p>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="stat-card">
+                        <span class="block text-[9px] uppercase tracking-widest text-gray-400">Decision Impact</span>
+                        <span class="text-2xl font-bold italic serif">Carrier Swap</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="block text-[9px] uppercase tracking-widest text-gray-400">Adoption</span>
+                        <span class="text-2xl font-bold italic serif">100% Org-wide</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<article class="py-24 px-6">
+        <div class="max-w-4xl mx-auto space-y-24">
+            
+            <section class="grid md:grid-cols-3 gap-12">
+                <h3 class="text-xl font-black uppercase tracking-widest text-gray-400">The Problem</h3>
+                <div class="md:col-span-2 text-gray-700 leading-relaxed font-light text-lg">
+                    <p>The operations team was flying blind. Despite high shipping volumes, fulfillment delays were increasing, leading to a <span class="text-black font-bold">12% spike in customer churn</span>. Data was fragmented across siloed platforms, preventing leadership from seeing the root cause of the inefficiency.</p>
+                </div>
+            </section>
+
+            <section class="bg-gray-900 text-white p-10 md:p-16 rounded-sm relative overflow-hidden">
+                <div class="relative z-10">
+                    <h3 class="text-accent font-bold uppercase tracking-[0.3em] text-[10px] mb-6">Critical Insights & Actions</h3>
+                    <div class="grid md:grid-cols-2 gap-12 text-sm leading-relaxed">
+                        <div>
+                            <h4 class="text-2xl italic serif mb-4">The Discovery</h4>
+                            <p class="text-gray-400 font-light">Analysis revealed that <span class="text-white font-semibold">63% of all delays</span> were concentrated in just two specific carriers operating during peak "Wednesday surges" in the West region.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl italic serif mb-4">The Decision</h4>
+                            <p class="text-gray-400 font-light">Based on these findings, I recommended <span class="text-white font-semibold">rerouting 40% of West-region volume</span> to alternate carriers during peak windows. Management implemented this change immediately.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-10 border-t border-gray-100 pt-20">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                    <div>
+                        <h3 class="text-xl font-black uppercase tracking-widest text-gray-400 mb-4">Operational Dashboard</h3>
+                        <p class="text-sm text-gray-600 max-w-xl font-light italic">
+                            This dashboard enabled leadership to <span class="text-black font-bold italic">monitor carrier performance in real-time</span> and validate the rerouting strategy within the first 14 days of implementation.
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-accent border-b border-accent pb-1">Decision Support Tool</span>
+                    </div>
+                </div>
+
+                <div class="space-y-12">
+                    <div class="group relative overflow-hidden bg-gray-100 rounded-sm shadow-xl border border-gray-200">
+                        <img src="your-dashboard-image-1.png" alt="Operational Heatmap" class="w-full h-auto grayscale-[20%] hover:grayscale-0 transition-all duration-500">
+                        <div class="p-6 bg-white border-t border-gray-100">
+                            <p class="text-xs text-gray-500 italic">Figure 1.0: Geographic Heatmap showing carrier-specific lag spikes during peak surge hours. This view was used in daily 15-minute ops standups.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="p-6 bg-gray-50 border-t-2 border-accent">
+                            <h4 class="font-bold uppercase tracking-widest text-[9px] mb-2">Drill-Down Logic</h4>
+                            <p class="text-[11px] text-gray-500 leading-relaxed font-light">Stakeholders could pivot from global trends to specific Order IDs to identify the exact cause of a delay in under 3 clicks.</p>
+                        </div>
+                        <div class="p-6 bg-gray-50 border-t-2 border-accent">
+                            <h4 class="font-bold uppercase tracking-widest text-[9px] mb-2">Automated Alerting</h4>
+                            <p class="text-[11px] text-gray-500 leading-relaxed font-light">Integrated conditional formatting to highlight SLA breaches, allowing the team to intervene 24 hours earlier than previous workflows.</p>
+                        </div>
+                        <div class="p-6 bg-gray-50 border-t-2 border-accent">
+                            <h4 class="font-bold uppercase tracking-widest text-[9px] mb-2">High-Adoption UX</h4>
+                            <p class="text-[11px] text-gray-500 leading-relaxed font-light">Optimized for rapid scanning. The clean, logic-driven interface resulted in a 100% adoption rate among the regional logistics leads.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid md:grid-cols-3 gap-12 border-t border-gray-100 pt-20">
+                <h3 class="text-xl font-black uppercase tracking-widest text-gray-400">Approach</h3>
+                <div class="md:col-span-2 space-y-8">
+                    <div class="flex gap-6">
+                        <span class="text-accent font-bold serif italic text-2xl">01</span>
+                        <div>
+                            <h4 class="font-bold text-sm uppercase tracking-widest mb-2">Centralization</h4>
+                            <p class="text-gray-500 font-light text-sm">Aggregated 320k records using T-SQL to create a "Single Source of Truth" for logistics performance.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <span class="text-accent font-bold serif italic text-2xl">02</span>
+                        <div>
+                            <h4 class="font-bold text-sm uppercase tracking-widest mb-2">Pattern Identification</h4>
+                            <p class="text-gray-500 font-light text-sm">Used Python (Pandas) to run statistical correlations between carrier performance, regional weather, and fulfillment lag.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid md:grid-cols-3 gap-12 border-t border-gray-100 pt-20 pb-10">
+                <h3 class="text-xl font-black uppercase tracking-widest text-gray-400">Reflection</h3>
+                <div class="md:col-span-2 space-y-6 text-gray-600 font-light text-sm leading-relaxed">
+                    <p><span class="text-black font-bold uppercase text-[10px] tracking-widest block mb-2">The Trade-off</span>
+                    I opted for a rule-based alerting system rather than a complex ML model. This allowed for <span class="italic font-normal text-black">immediate implementation</span> and transparency, which was critical for gaining initial stakeholder trust.</p>
+                    
+                    <p><span class="text-black font-bold uppercase text-[10px] tracking-widest block mb-2">Future Scalability</span>
+                    As the data volume grows, the next iteration will involve automating the carrier-rerouting recommendations directly into the ERP system via API.</p>
+                </div>
+            </section>
+
+        </div>
+    </article>
+
+    <footer class="py-20 bg-dark text-white text-center px-6">
+        <h2 class="text-3xl serif italic mb-8">Ready to discuss strategic data solutions?</h2>
+        <a href="index.html#contact" class="btn-outline border-white text-white hover:bg-white hover:text-black">Contact Unochi</a>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ duration: 1000, once: true });</script>
+</body>
+</html>
