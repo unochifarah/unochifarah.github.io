@@ -2,7 +2,7 @@ backend:
   name: github
   repo: unochifarah/unochifarah.github.io
   branch: main
-  auth_type: implicit
+  auth_type: pkce
   app_id: Ov23lic4NIeEr67R92BV
 
 media_folder: "images/uploads"
