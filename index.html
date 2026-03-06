@@ -4,249 +4,281 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unochi Farah | Data Analyst | SQL & Python Specialist</title>
-    <meta name="description" content="Data Analyst specializing in SQL, Python, and Tableau. Transforming complex datasets into actionable business intelligence and revenue-risk models.">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        :root { --deep-red: #8B0000; --dark-black: #0a0a0a; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: var(--dark-black); overflow-x: hidden; }
-        h1, h2, .serif { font-family: 'DM Serif Display', serif; }
-        
-        .text-accent { color: var(--deep-red); }
-        .bg-accent { background-color: var(--deep-red); }
-        .bg-dark { background-color: var(--dark-black); }
-        
-        #progress-bar { height: 4px; background: var(--deep-red); position: fixed; top: 0; left: 0; z-index: 100; }
-        .grid-bg { background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px); background-size: 30px 30px; }
-        
-        section { scroll-margin-top: 6rem; }
+        :root { --cream:#F0F4F5; --red-deep:#7A0114; --red:#CB001D; --dark:#0E0E0E; }
+        html { scroll-snap-type:y proximity; scroll-behavior:smooth; }
+        body { font-family:'Plus Jakarta Sans',sans-serif; background-color:var(--cream); color:var(--dark); overflow-x:hidden; }
+        h1,h2,h3,.serif { font-family:'DM Serif Display',serif; }
+        section,footer { scroll-snap-align:start; scroll-margin-top:5rem; }
+        .text-accent { color:var(--red); }
+        #progress-bar { height:3px; background:var(--red); position:fixed; top:0; left:0; z-index:100; }
+        .grid-bg { background-image:linear-gradient(rgba(14,14,14,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,14,14,0.055) 1px,transparent 1px); background-size:30px 30px; background-color:var(--cream); }
+        .nav-link { position:relative; transition:color 0.3s; font-weight:500; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; }
+        .nav-link:hover { color:var(--red); }
+        .nav-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:-4px; left:0; background-color:var(--red); transition:width 0.3s ease; }
+        .nav-link:hover::after { width:100%; }
+        .btn-outline { border:1.5px solid var(--dark); padding:11px 26px; transition:0.35s; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; display:inline-block; color:var(--dark); }
+        .btn-outline-secondary { border-color:rgba(14,14,14,0.35); }
+        .btn-outline:hover { background:var(--red); border-color:var(--red); color:var(--cream); transform:translateY(-2px); }
+        .social-link { position:relative; padding-bottom:3px; transition:color 0.3s; }
+        .social-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:0; left:0; background-color:var(--red); transition:width 0.3s ease; }
+        .social-link:hover { color:var(--red); }
+        .social-link:hover::after { width:100%; }
 
-        .nav-link { position: relative; transition: color 0.3s; }
-        .nav-link:hover { color: var(--deep-red); }
-        .nav-link::after { content: ''; position: absolute; width: 0; height: 1.5px; bottom: -4px; left: 0; background-color: var(--deep-red); transition: width 0.3s ease; }
-        .nav-link:hover::after { width: 100%; }
+        /* UNLOCKED CARD */
+        .project-card { display:block; position:relative; border:1px solid rgba(14,14,14,0.09); padding:2.2rem; overflow:hidden; text-decoration:none; color:inherit; background:var(--cream); transition:border-color 0.25s; }
+        .project-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform 0.35s ease; }
+        .project-card:hover { border-color:rgba(14,14,14,0.2); }
+        .project-card:hover::before { transform:scaleX(1); }
+        .project-num { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.18em; color:rgba(14,14,14,0.2); margin-bottom:1.1rem; }
+        .project-tag-pill { display:inline-block; font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); border:1px solid rgba(203,0,29,0.25); padding:0.2rem 0.52rem; margin-bottom:0.75rem; }
+        .project-card-title { font-family:'DM Serif Display',serif; font-size:1.35rem; font-weight:400; line-height:1.25; color:var(--dark); margin-bottom:0.6rem; }
+        .project-card-desc { font-size:0.81rem; font-weight:300; line-height:1.75; color:rgba(14,14,14,0.5); margin-bottom:1.25rem; }
+        .project-tools-row { display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:1.35rem; }
+        .tool-chip { font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.07em; background:rgba(14,14,14,0.055); color:rgba(14,14,14,0.48); padding:0.17rem 0.45rem; }
+        .project-arrow { position:absolute; top:2.2rem; right:2.2rem; font-size:0.95rem; color:rgba(14,14,14,0.16); transition:color 0.25s,transform 0.25s; }
+        .project-card:hover .project-arrow { color:var(--red); transform:translate(3px,-3px); }
+        .project-impact { font-size:0.73rem; font-weight:500; color:rgba(14,14,14,0.55); border-top:1px solid rgba(14,14,14,0.07); padding-top:0.9rem; display:flex; align-items:center; gap:0.5rem; }
+        .project-impact::before { content:''; display:inline-block; width:1.1rem; height:1px; background:var(--red); flex-shrink:0; }
 
-        .btn-outline { border: 2px solid var(--dark-black); padding: 12px 28px; transition: 0.4s; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 800; display: inline-block; }
-        .btn-outline-secondary { border-color: #52525b; color: #18181b; } 
-        .btn-outline:hover { background: var(--deep-red); border-color: var(--deep-red); color: white; transform: translateY(-2px); }
+        /* LOCKED CARD */
+        .project-card-locked { display:block; position:relative; border:1px solid rgba(14,14,14,0.09); padding:2.2rem; overflow:hidden; text-decoration:none; color:inherit; background:#e8ebec; cursor:not-allowed; filter:grayscale(1); user-select:none; }
+        .project-card-locked::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(14,14,14,0.045) 3px,rgba(14,14,14,0.045) 4px); pointer-events:none; z-index:1; }
+        .locked-overlay { position:absolute; inset:0; background:rgba(14,14,14,0.38); z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.6rem; transition:background 0.3s; }
+        .project-card-locked:hover .locked-overlay { background:rgba(14,14,14,0.52); }
+        @keyframes lockShake { 0%,100%{transform:rotate(0deg)} 20%{transform:rotate(-9deg)} 40%{transform:rotate(9deg)} 60%{transform:rotate(-6deg)} 80%{transform:rotate(6deg)} }
+        .project-card-locked:hover .lock-icon { animation:lockShake 0.45s ease; }
+        .lock-icon { font-size:2rem; line-height:1; display:block; }
+        .locked-label { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase; color:rgba(240,244,245,0.9); font-weight:500; }
+        .locked-badge { position:absolute; top:2.1rem; right:2.2rem; font-family:'DM Mono',monospace; font-size:0.5rem; letter-spacing:0.22em; text-transform:uppercase; background:rgba(14,14,14,0.75); color:rgba(240,244,245,0.55); padding:0.22rem 0.6rem; border:1px solid rgba(240,244,245,0.12); z-index:3; }
 
-        .social-link { position: relative; padding-bottom: 4px; transition: color 0.3s; }
-        .social-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--deep-red); transition: width 0.3s ease; }
-        .social-link:hover { color: var(--deep-red); }
-        .social-link:hover::after { width: 100%; }
-        
-        .work-overlay { background: linear-gradient(45deg, rgba(10,10,10,0.94), rgba(139,0,0,0.4)); }
+        /* STACK */
+        .stack-card { border-right:1px solid var(--dark); border-bottom:1px solid var(--dark); transition:background 0.4s; }
+        .stack-card:hover { background:var(--dark); }
+        .stack-card:hover .stack-title { color:var(--cream); }
+        .stack-card:hover .stack-desc { color:rgba(240,244,245,0.5); }
+        .stack-card:hover .stack-chip { background:var(--red); color:var(--cream); border-color:var(--red); }
+        .stack-title { font-family:'DM Serif Display',serif; font-size:1.75rem; transition:color 0.4s; text-decoration:underline; text-decoration-color:var(--red); text-decoration-thickness:2px; text-underline-offset:8px; color:var(--dark); }
+        .stack-desc { font-size:0.82rem; font-weight:300; line-height:1.7; transition:color 0.4s; color:rgba(14,14,14,0.5); }
+        .stack-chip { font-size:0.62rem; font-weight:500; letter-spacing:0.08em; border:1px solid rgba(14,14,14,0.18); padding:0.2rem 0.6rem; transition:background 0.4s,color 0.4s,border-color 0.4s; color:var(--dark); }
     </style>
 </head>
-<body class="selection:bg-red-900 selection:text-white">
+<body class="selection:bg-red-800 selection:text-white">
+<div id="progress-bar" style="width:0%"></div>
 
-    <div id="progress-bar" style="width: 0%"></div>
+<!-- NAV -->
+<nav class="fixed w-full z-50 backdrop-blur-md border-b px-6 py-5" style="background:rgba(240,244,245,0.92);border-color:rgba(14,14,14,0.08);">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="text-lg uppercase tracking-tight" style="font-weight:600;letter-spacing:-0.02em;">Unochi Farah<span class="text-accent">.</span></div>
+        <div class="flex gap-8 md:gap-12 items-center">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#work" class="nav-link">Work</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+    </div>
+</nav>
 
-    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 px-6 py-5">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-xl font-extrabold tracking-tighter uppercase">Unochi Farah<span class="text-accent">.</span></div>
-            <div class="flex gap-8 md:gap-12 text-[10px] uppercase tracking-[0.3em] font-bold items-center">
-                <a href="#about" class="nav-link">About</a>
-                <a href="#work" class="nav-link">Work</a>
-                <a href="#contact" class="nav-link">Contact</a>
+<!-- HERO -->
+<section class="min-h-screen flex items-center pt-24 grid-bg px-6">
+    <div class="max-w-7xl mx-auto w-full">
+        <div data-aos="fade-up" data-aos-duration="1200">
+            <h1 class="text-6xl md:text-8xl lg:text-[9.5rem] leading-[0.82] mb-10" style="font-weight:400;">
+                Data <span class="text-accent italic">Analytics</span>
+                <br class="hidden md:block">
+                &amp; Predictive Strategy.
+            </h1>
+            <p class="text-base md:text-lg max-w-xl font-light leading-relaxed mb-12" style="color:rgba(14,14,14,0.58);">
+                Helping businesses
+                <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:4px;">reduce inefficiencies</span>
+                and
+                <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:4px;">predict revenue risk</span>
+                through professional SQL &amp; Python modeling. Built dashboards used in executive-level decision making.
+            </p>
+            <div class="flex flex-wrap gap-5">
+                <a href="#work" class="btn-outline">View Case Studies</a>
+                <a href="https://www.linkedin.com/in/jasmine-unochi-4613a3169/" target="_blank" rel="noopener noreferrer" class="btn-outline btn-outline-secondary">Get in Touch</a>
             </div>
         </div>
-    </nav>
+    </div>
+</section>
 
-    <section class="min-h-screen flex items-center pt-24 grid-bg px-6">
-        <div class="max-w-7xl mx-auto w-full">
-            <div data-aos="fade-up" data-aos-duration="1200">
-                <h1 class="text-6xl md:text-8xl lg:text-[10rem] leading-[0.8] mb-10">
-                    Data <span class="text-accent italic">Analytics</span> <br class="hidden md:block"> & Predictive Strategy.
-                </h1>
-                <p class="text-lg md:text-xl text-gray-600 max-w-2xl font-light leading-relaxed mb-12">
-                    Helping businesses <span class="text-black font-semibold underline decoration-accent underline-offset-4">reduce inefficiencies</span> and <span class="text-black font-semibold underline decoration-accent underline-offset-4">predict revenue risk</span> through professional SQL & Python modeling. Built dashboards used in executive-level decision making.
-                </p>
-                <div class="flex flex-wrap gap-6">
-                    <a href="#work" class="btn-outline">View Case Studies</a>
-                    <a href="https://www.linkedin.com/in/jasmine-unochi-4613a3169/" target="_blank" rel="noopener noreferrer" class="btn-outline btn-outline-secondary">Get in Touch</a>
-                </div>
-            </div>
+<!-- ABOUT -->
+<section id="about" class="py-32 relative overflow-hidden px-6" style="background:var(--dark);color:var(--cream);">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+        <div data-aos="fade-right">
+            <h2 class="text-5xl md:text-6xl mb-8 leading-tight" style="font-weight:400;">The Analyst <br><span class="text-accent italic">Behind</span> the Numbers</h2>
         </div>
-    </section>
-
-    <section id="about" class="py-32 bg-dark text-white relative overflow-hidden px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-            <div data-aos="fade-right">
-                <h2 class="text-5xl md:text-7xl mb-8 leading-tight">The Analyst <br><span class="text-accent italic">Behind</span> the Numbers</h2>
-            </div>
-            <div class="space-y-6 text-gray-400 font-light leading-relaxed border-l border-gray-800 pl-8" data-aos="fade-left">
-                <p>
-                    I am a Data Analyst driven by finding the narrative in numbers. I specialize in <span class="text-white">T-SQL</span> and <span class="text-white">Python</span> to build robust, automated data solutions.
-                </p>
-                <p>
-                    My focus is on <span class="text-white">Efficiency</span> and <span class="text-white">Impact</span>—ensuring that every dashboard I build leads directly to a measurable business decision.
-                </p>
-                <a href="resume.pdf" class="inline-block mt-4 border-b border-accent text-white text-xs uppercase tracking-widest pb-1 hover:text-accent transition-colors">Download Resume →</a>
-            </div>
+        <div class="space-y-5 font-light leading-relaxed pl-8" style="border-left:1px solid rgba(240,244,245,0.08);color:rgba(240,244,245,0.5);" data-aos="fade-left">
+            <p>I am a Data Analyst driven by finding the narrative in numbers. I specialize in <span style="color:var(--cream);">T-SQL</span> and <span style="color:var(--cream);">Python</span> to build robust, automated data solutions.</p>
+            <p>My focus is on <span style="color:var(--cream);">Efficiency</span> and <span style="color:var(--cream);">Impact</span> — ensuring that every dashboard I build leads directly to a measurable business decision.</p>
+            <a href="resume.pdf" class="inline-block mt-4 text-xs uppercase tracking-widest pb-1 transition-colors hover:text-accent" style="border-bottom:1px solid var(--red);color:var(--cream);">Download Resume →</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="work" class="py-32 px-6 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-baseline gap-4 mb-20">
-            <h2 class="text-6xl uppercase tracking-tighter font-black">Work</h2>
-            <div class="h-[1px] flex-grow bg-gray-100 hidden md:block"></div>
-            <span class="text-accent font-bold serif italic text-2xl">Proven Impact</span>
+<!-- WORK -->
+<section id="work" class="py-32 px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-baseline gap-4 mb-16">
+            <h2 class="text-5xl uppercase tracking-tight" style="font-weight:600;letter-spacing:-0.02em;">Work</h2>
+            <div class="h-[1px] flex-grow hidden md:block" style="background:rgba(14,14,14,0.1);"></div>
+            <span class="text-accent serif italic text-2xl" style="font-weight:400;">Selected Case Studies</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
-            <div class="group relative" data-aos="fade-up">
-                <div class="aspect-video bg-gray-100 mb-8 overflow-hidden relative">
-                    <div class="absolute inset-0 work-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center z-10 p-8 text-center">
-                        <p class="text-white text-xs mb-4 font-light">Analyzed 320k+ logistics records using T-SQL to identify delay patterns.</p>
-                        <span class="text-white text-[10px] tracking-[0.5em] font-bold border border-white px-6 py-2 uppercase">Explore Case Study</span>
-                    </div>
-                    <div class="w-full h-full bg-neutral-900 group-hover:scale-110 transition-transform duration-700 flex items-center justify-center">
-                        <span class="text-gray-700 font-black text-6xl italic opacity-20 serif">01</span>
-                    </div>
-                </div>
-                <h3 class="text-2xl font-black uppercase mb-3 tracking-tight">Supply Chain Optimization</h3>
-                
-                <div class="flex gap-4 mb-4 text-[10px] font-bold text-accent uppercase tracking-widest">
-                    <span>SQL Server</span> • <span>Tableau</span> • <span>Python</span>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px]" style="background:rgba(14,14,14,0.09);border:1px solid rgba(14,14,14,0.09);" data-aos="fade-up">
 
-                <ul class="text-gray-500 text-sm font-light mb-6 space-y-2">
-                    <li class="flex items-start gap-2"><span class="text-accent">📈</span> Reduced fulfillment delay by 18%</li>
-                    <li class="flex items-start gap-2"><span class="text-accent">📈</span> Built automated cleaning pipelines for 250k+ records</li>
-                </ul>
+            <!-- 01 UNLOCKED -->
+            <a href="project-one.html" class="project-card">
+                <span class="project-arrow">↗</span>
+                <div class="project-num">01</div>
+                <div class="project-tag-pill">Sales Analysis</div>
+                <h3 class="project-card-title">AWS SaaS Sales Analysis</h3>
+                <p class="project-card-desc">Analyzed 9,993 B2B transactions across 48 countries and 3 regions using Excel and Tableau — surfacing discount impact, profitability drivers, and segment-level revenue trends.</p>
+                <div class="project-tools-row"><span class="tool-chip">Excel</span><span class="tool-chip">Power Query</span><span class="tool-chip">Tableau</span></div>
+                <div class="project-impact">$2.3M in revenue analyzed · 18.7% loss-order rate identified</div>
+            </a>
 
-                <a href="project-one.html" class="social-link text-[10px] font-black uppercase tracking-widest inline-block">Full Case Study →</a>
+            <!-- 02 LOCKED -->
+            <div class="project-card-locked">
+                <div class="locked-badge">Locked</div>
+                <div class="project-num">02</div>
+                <div class="locked-overlay">
+                    <span class="lock-icon">🔒</span>
+                    <span class="locked-label">Coming Soon</span>
+                </div>
             </div>
 
-            <div class="group relative" data-aos="fade-up" data-aos-delay="200">
-                <div class="aspect-video bg-gray-100 mb-8 overflow-hidden relative">
-                    <div class="absolute inset-0 work-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center z-10 p-8 text-center">
-                        <p class="text-white text-xs mb-4 font-light">Engineered a Scikit-Learn model to predict churn with 92% accuracy.</p>
-                        <span class="text-white text-[10px] tracking-[0.5em] font-bold border border-white px-6 py-2 uppercase">Explore Case Study</span>
-                    </div>
-                    <div class="w-full h-full bg-neutral-900 group-hover:scale-110 transition-transform duration-700 flex items-center justify-center">
-                        <span class="text-gray-700 font-black text-6xl italic opacity-20 serif">02</span>
-                    </div>
+            <!-- 03 LOCKED -->
+            <div class="project-card-locked">
+                <div class="locked-badge">Locked</div>
+                <div class="project-num">03</div>
+                <div class="locked-overlay">
+                    <span class="lock-icon">🔒</span>
+                    <span class="locked-label">Coming Soon</span>
                 </div>
-                <h3 class="text-2xl font-black uppercase mb-3 tracking-tight">Churn Predictive Engine</h3>
-                
-                <div class="flex gap-4 mb-4 text-[10px] font-bold text-accent uppercase tracking-widest">
-                    <span>Python</span> • <span>Scikit-Learn</span> • <span>Power BI</span>
+            </div>
+
+            <!-- 04 LOCKED -->
+            <div class="project-card-locked">
+                <div class="locked-badge">Locked</div>
+                <div class="project-num">04</div>
+                <div class="locked-overlay">
+                    <span class="lock-icon">🔒</span>
+                    <span class="locked-label">Coming Soon</span>
                 </div>
+            </div>
 
-                <ul class="text-gray-500 text-sm font-light mb-6 space-y-2">
-                    <li class="flex items-start gap-2"><span class="text-accent">📈</span> Identified $2.1M in at-risk revenue segments</li>
-                    <li class="flex items-start gap-2"><span class="text-accent">📈</span> Integrated predictive scores into executive BI tools</li>
-                </ul>
+            <!-- 05 LOCKED -->
+            <div class="project-card-locked">
+                <div class="locked-badge">Locked</div>
+                <div class="project-num">05</div>
+                <div class="locked-overlay">
+                    <span class="lock-icon">🔒</span>
+                    <span class="locked-label">Coming Soon</span>
+                </div>
+            </div>
 
-                <a href="#" class="social-link text-[10px] font-black uppercase tracking-widest inline-block">Full Case Study →</a>
+            <!-- 06 LOCKED -->
+            <div class="project-card-locked">
+                <div class="locked-badge">Locked</div>
+                <div class="project-num">06</div>
+                <div class="locked-overlay">
+                    <span class="lock-icon">🔒</span>
+                    <span class="locked-label">Coming Soon</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" class="py-32 px-6" style="border-top:1px solid rgba(14,14,14,0.08);">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-5xl md:text-6xl uppercase tracking-tight mb-16" style="font-weight:600;letter-spacing:-0.02em;">Technical <span class="text-accent serif italic" style="font-weight:400;">Stack</span></h2>
+        <div class="grid grid-cols-1 md:grid-cols-3" style="border-top:1px solid var(--dark);border-left:1px solid var(--dark);">
+            <div class="stack-card p-10">
+                <div class="stack-title mb-5">SQL &amp; Python</div>
+                <p class="stack-desc mb-8">Data extraction, complex cleaning, and statistical modeling.</p>
+                <div class="flex flex-wrap gap-2"><span class="stack-chip">T-SQL</span><span class="stack-chip">Pandas</span></div>
+            </div>
+            <div class="stack-card p-10">
+                <div class="stack-title mb-5">BI &amp; Excel</div>
+                <p class="stack-desc mb-8">Executive dashboards and high-performance automation.</p>
+                <div class="flex flex-wrap gap-2"><span class="stack-chip">Power BI</span><span class="stack-chip">VBA</span></div>
+            </div>
+            <div class="stack-card p-10">
+                <div class="stack-title mb-5">Visualization</div>
+                <p class="stack-desc mb-8">Storytelling and interactive reporting for stakeholders.</p>
+                <div class="flex flex-wrap gap-2"><span class="stack-chip">Tableau</span><span class="stack-chip">DAX</span></div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="stack" class="py-32 bg-white px-6 border-t border-gray-100">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-20">Technical <span class="text-accent italic serif">Stack</span></h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 border-t border-l border-gray-900">
-                <div class="p-10 border-r border-b border-gray-900 group hover:bg-[#0a0a0a] transition-all duration-500">
-                    <h3 class="text-3xl mb-6 italic serif text-gray-900 group-hover:text-white transition-colors underline decoration-accent decoration-2 underline-offset-8">SQL & Python</h3>
-                    <p class="text-sm font-light text-gray-500 group-hover:text-gray-300 mb-8">Data extraction, complex cleaning, and statistical modeling.</p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 border border-gray-200 text-[10px] font-bold group-hover:bg-accent group-hover:text-white">T-SQL</span>
-                        <span class="px-3 py-1 border border-gray-200 text-[10px] font-bold group-hover:bg-accent group-hover:text-white">PANDAS</span>
-                    </div>
-                </div>
-                <div class="p-10 border-r border-b border-gray-900 group hover:bg-[#0a0a0a] transition-all duration-500">
-                    <h3 class="text-3xl mb-6 italic serif text-gray-900 group-hover:text-white transition-colors underline decoration-accent decoration-2 underline-offset-8">BI & Excel</h3>
-                    <p class="text-sm font-light text-gray-500 group-hover:text-gray-300 mb-8">Executive dashboards and high-performance automation.</p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 border border-gray-200 text-[10px] font-bold group-hover:bg-accent group-hover:text-white">POWER BI</span>
-                        <span class="px-3 py-1 border border-gray-200 text-[10px] font-bold group-hover:bg-accent group-hover:text-white">VBA</span>
-                    </div>
-                </div>
-                <div class="p-10 border-r border-b border-gray-900 group hover:bg-[#0a0a0a] transition-all duration-500">
-                    <h3 class="text-3xl mb-6 italic serif text-gray-900 group-hover:text-white transition-colors underline decoration-accent decoration-2 underline-offset-8">Visualization</h3>
-                    <p class="text-sm font-light text-gray-500 group-hover:text-gray-300 mb-8">Storytelling and interactive reporting for stakeholders.</p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 border border-gray-200 text-[10px] font-bold group-hover:bg-accent group-hover:text-white">TABLEAU</span>
-                        <span class="px-3 py-1 border border-gray-200 text-[10px] font-bold group-hover:bg-accent group-hover:text-white">DAX</span>
-                    </div>
-                </div>
-            </div>
+<!-- STRATEGIC OFFSET -->
+<section class="py-24 px-6" style="border-top:1px solid rgba(14,14,14,0.07);border-bottom:1px solid rgba(14,14,14,0.07);">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+        <div class="max-w-xl">
+            <h3 class="text-[10px] uppercase tracking-[0.5em] font-semibold text-accent mb-4">The Strategic Offset</h3>
+            <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.58);">
+                I apply <span style="color:var(--dark);font-weight:500;">Systems Engineering</span> and <span style="color:var(--dark);font-weight:500;">Agile Iteration</span> to the data lifecycle. My background in C# and Logic Design allows me to build
+                <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:2px;text-underline-offset:4px;">scalable data tools</span>
+                that prioritize stakeholder adoption and long-term maintainability.
+            </p>
         </div>
-    </section>
-
-    <section class="py-24 bg-gray-50 border-y border-gray-200 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
-                <div class="max-w-xl">
-                    <h3 class="text-xs uppercase tracking-[0.5em] font-black text-accent mb-4">The Strategic Offset</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        I apply <span class="text-black font-bold">Systems Engineering</span> and <span class="text-black font-bold">Agile Iteration</span> to the data lifecycle. My background in C# and Logic Design allows me to build <span class="text-black font-semibold underline decoration-accent decoration-2 underline-offset-4">scalable data tools</span> that prioritize stakeholder adoption and long-term maintainability over static, one-off reporting.
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-12">
-                    <div class="text-center">
-                        <span class="block text-2xl font-black italic serif mb-1">Scalability</span>
-                        <span class="text-[9px] uppercase tracking-widest text-gray-400">Modular Architecture</span>
-                    </div>
-                    <div class="text-center border-l border-gray-200 pl-12">
-                        <span class="block text-2xl font-black italic serif mb-1">Iteration</span>
-                        <span class="text-[9px] uppercase tracking-widest text-gray-400">Stakeholder-Led UX</span>
-                    </div>
-                    <div class="text-center border-l border-gray-200 pl-12">
-                        <span class="block text-2xl font-black italic serif mb-1">Usability</span>
-                        <span class="text-[9px] uppercase tracking-widest text-gray-400">High-Adoption Tools</span>
-                    </div>
-                </div>
-            </div>
+        <div class="flex flex-wrap gap-12">
+            <div class="text-center"><span class="block text-xl serif italic mb-1">Scalability</span><span class="text-[9px] uppercase tracking-widest" style="color:rgba(14,14,14,0.35);">Modular Architecture</span></div>
+            <div class="text-center pl-12" style="border-left:1px solid rgba(14,14,14,0.1);"><span class="block text-xl serif italic mb-1">Iteration</span><span class="text-[9px] uppercase tracking-widest" style="color:rgba(14,14,14,0.35);">Stakeholder-Led UX</span></div>
+            <div class="text-center pl-12" style="border-left:1px solid rgba(14,14,14,0.1);"><span class="block text-xl serif italic mb-1">Usability</span><span class="text-[9px] uppercase tracking-widest" style="color:rgba(14,14,14,0.35);">High-Adoption Tools</span></div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer id="contact" class="bg-dark text-white pt-32 pb-12 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-24 mb-32">
+<!-- FOOTER -->
+<footer id="contact" class="pt-32 pb-12 px-6" style="background:var(--dark);color:var(--cream);">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-24 mb-32">
+            <div>
+                <h2 class="text-6xl md:text-8xl mb-8 italic serif leading-none" style="font-weight:400;">Let's <span class="text-accent">Connect</span></h2>
+                <p class="text-sm font-light leading-relaxed max-w-xs" style="color:rgba(240,244,245,0.4);">Currently accepting data roles focused on predictive strategy and business scaling.</p>
+            </div>
+            <div class="space-y-12">
                 <div>
-                    <h2 class="text-6xl md:text-8xl font-black mb-8 italic serif leading-none">Let's <span class="text-accent">Connect</span></h2>
-                    <p class="text-gray-500 max-w-sm font-light leading-relaxed">Currently accepting data roles focused on predictive strategy and business scaling.</p>
+                    <h4 class="text-[10px] uppercase tracking-[0.4em] font-semibold mb-4" style="color:var(--red);">Direct Email</h4>
+                    <a href="mailto:unocharah@gmail.com" class="text-2xl md:text-4xl serif transition-colors duration-300" style="color:var(--cream);" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--cream)'">unocharah@gmail.com</a>
                 </div>
-                <div class="space-y-12">
-                    <div>
-                        <h4 class="text-[10px] uppercase tracking-[0.4em] text-accent font-bold mb-4">Direct Email</h4>
-                        <a href="mailto:unocharah@domain.com" class="text-3xl md:text-5xl hover:text-accent transition-all duration-300 serif">unocharah@gmail.com</a>
-                    </div>
-                    <div>
-                        <h4 class="text-[10px] uppercase tracking-[0.4em] text-accent font-bold mb-6">Social Ecosystem</h4>
-                        <div class="flex gap-10">
-                            <a href="https://www.linkedin.com/in/jasmine-unochi-4613a3169/" target="_blank" rel="noopener noreferrer" class="social-link text-lg uppercase tracking-widest font-bold">LinkedIn</a>
-                            <a href="https://github.com/unochifarah" target="_blank" rel="noopener noreferrer" class="social-link text-lg uppercase tracking-widest font-bold">GitHub</a>
-                        </div>
+                <div>
+                    <h4 class="text-[10px] uppercase tracking-[0.4em] font-semibold mb-6" style="color:var(--red);">Social Ecosystem</h4>
+                    <div class="flex gap-10">
+                        <a href="https://www.linkedin.com/in/jasmine-unochi-4613a3169/" target="_blank" rel="noopener noreferrer" class="social-link text-sm uppercase tracking-widest font-medium" style="color:var(--cream);">LinkedIn</a>
+                        <a href="https://github.com/unochifarah" target="_blank" rel="noopener noreferrer" class="social-link text-sm uppercase tracking-widest font-medium" style="color:var(--cream);">GitHub</a>
                     </div>
                 </div>
-            </div>
-            <div class="pt-8 border-t border-gray-900 flex justify-between items-center text-[10px] uppercase tracking-[0.3em] font-bold text-gray-600">
-                <div class="flex items-center gap-3">
-                    <span class="h-2 w-2 rounded-full bg-accent animate-pulse"></span>
-                    <span>Open to Opportunities</span>
-                </div>
-                <p>&copy; Unochi Farah</p>
             </div>
         </div>
-    </footer>
+        <div class="pt-8 flex justify-between items-center text-[10px] uppercase tracking-[0.3em] font-medium" style="border-top:1px solid rgba(240,244,245,0.07);color:rgba(240,244,245,0.28);">
+            <div class="flex items-center gap-3"><span class="h-2 w-2 rounded-full animate-pulse" style="background:var(--red);"></span><span>Open to Opportunities</span></div>
+            <p>&copy; Unochi Farah</p>
+        </div>
+    </div>
+</footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 1000, once: true });
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        };
-    </script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof AOS !== 'undefined') {
+            AOS.init({ duration:1000, once:true });
+        }
+    });
+    window.addEventListener('scroll', function() {
+        let s = document.body.scrollTop || document.documentElement.scrollTop;
+        let h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById("progress-bar").style.width = (s/h*100)+"%";
+    });
+</script>
 </body>
 </html>
