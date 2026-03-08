@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study 02 — E-Commerce Customer Behavior Analysis | Unochi Farah</title>
+    <meta name="description" content="RFM segmentation and churn prediction on 500K+ transactions from Olist Brazilian E-Commerce. 79.75% of revenue at risk identified using PostgreSQL and Power BI.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --cream:#F0F4F5; --red:#CB001D; --dark:#0E0E0E; }
+        html { scroll-behavior: smooth; }
+        body { font-family:'Plus Jakarta Sans',sans-serif; background-color:var(--cream); color:var(--dark); overflow-x:hidden; }
+        h1,h2,h3,h4,.serif { font-family:'DM Serif Display',serif; }
+        code,.mono { font-family:'DM Mono',monospace; }
+        .text-accent { color:var(--red); }
+        #progress-bar { height:3px; background:var(--red); position:fixed; top:0; left:0; z-index:100; transition:width 0.1s; }
+        .grid-bg { background-image:linear-gradient(rgba(14,14,14,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,14,14,0.055) 1px,transparent 1px); background-size:30px 30px; background-color:var(--cream); }
+        .nav-link { position:relative; transition:color 0.3s; font-weight:500; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; }
+        .nav-link:hover { color:var(--red); }
+        .nav-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:-4px; left:0; background-color:var(--red); transition:width 0.3s ease; }
+        .nav-link:hover::after { width:100%; }
+        .stat-block { border-left:2px solid var(--red); padding-left:1.2rem; }
+        .section-label { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:rgba(14,14,14,0.3); }
+        .insight-block { background:var(--dark); color:var(--cream); position:relative; overflow:hidden; }
+        .insight-block::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:radial-gradient(circle,rgba(203,0,29,0.12) 0%,transparent 70%); pointer-events:none; }
+        .process-step { border-left:1px solid rgba(14,14,14,0.1); padding-left:2rem; position:relative; }
+        .process-step::before { content:''; position:absolute; left:-4px; top:4px; width:7px; height:7px; border-radius:50%; background:var(--red); }
+        .thinking-card { border:1px solid rgba(14,14,14,0.09); padding:2rem; background:var(--cream); position:relative; overflow:hidden; transition:border-color 0.25s; }
+        .thinking-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform 0.35s ease; }
+        .thinking-card:hover { border-color:rgba(14,14,14,0.2); }
+        .thinking-card:hover::after { transform:scaleX(1); }
+        .thinking-num { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--red); letter-spacing:0.15em; margin-bottom:0.75rem; }
+        .outcome-stat { position:relative; }
+        .outcome-stat::after { content:''; position:absolute; bottom:-1px; left:0; width:1.5rem; height:2px; background:var(--red); }
+        .reflection-tag { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); border:1px solid rgba(203,0,29,0.25); padding:0.2rem 0.52rem; display:inline-block; margin-bottom:0.75rem; }
+        .btn-outline { border:1.5px solid var(--cream); padding:11px 26px; transition:0.35s; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; display:inline-block; color:var(--cream); }
+        .btn-outline:hover { background:var(--red); border-color:var(--red); color:var(--cream); transform:translateY(-2px); }
+        hr.section-rule { border:none; border-top:1px solid rgba(14,14,14,0.08); margin:0; }
+        @keyframes fadeSlideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+        .hero-animate   { animation:fadeSlideUp 0.9s ease forwards; }
+        .hero-animate-2 { animation:fadeSlideUp 0.9s 0.2s ease forwards; opacity:0; }
+        .social-link { position:relative; padding-bottom:3px; transition:color 0.3s; }
+        .social-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:0; left:0; background-color:var(--red); transition:width 0.3s ease; }
+        .social-link:hover { color:var(--red); }
+        .social-link:hover::after { width:100%; }
+    </style>
+</head>
+<body>
+<div id="progress-bar" style="width:0%"></div>
+
+<!-- NAV -->
+<nav class="fixed w-full z-50 backdrop-blur-md border-b px-6 py-5" style="background:rgba(240,244,245,0.92);border-color:rgba(14,14,14,0.08);">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="index.html" class="text-lg uppercase tracking-tight" style="font-weight:600;letter-spacing:-0.02em;">Unochi Farah<span class="text-accent">.</span></a>
+        <div class="flex gap-8 md:gap-12 items-center">
+            <a href="index.html#work" class="nav-link">← All Work</a>
+            <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="flex items-end pb-20 pt-36 grid-bg px-6">
+    <div class="max-w-7xl mx-auto w-full">
+        <div class="hero-animate">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="mono text-[0.6rem] tracking-[0.3em] uppercase" style="color:rgba(14,14,14,0.3);">Case Study</span>
+                <span style="width:2rem;height:1px;background:var(--red);display:inline-block;"></span>
+                <span class="mono text-[0.6rem] tracking-[0.3em] uppercase" style="color:rgba(14,14,14,0.3);">02</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl leading-[1.15] mb-10" style="font-weight:400;max-width:26ch;">
+                E-Commerce <span class="text-accent italic">Customer</span> Behavior Analysis
+            </h1>
+        </div>
+        <div class="hero-animate-2 grid md:grid-cols-4 gap-8 mt-12 pt-10" style="border-top:1px solid rgba(14,14,14,0.09);">
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Tools</span>
+                <span class="font-medium text-sm">PostgreSQL · Power BI</span>
+            </div>
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Dataset</span>
+                <span class="font-medium text-sm">500K+ Transactions · 8 Tables</span>
+            </div>
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Coverage</span>
+                <span class="font-medium text-sm">93K Customers · 27 States</span>
+            </div>
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Period</span>
+                <span class="font-medium text-sm">2016 – 2018</span>
+            </div>
+        </div>
+    </div>
+</header>
+<hr class="section-rule">
+
+<article>
+    <!-- CONTEXT + PROBLEM -->
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right">
+                <span class="section-label">01 — Context</span>
+            </div>
+            <div class="md:col-span-9 md:col-start-4 grid md:grid-cols-2 gap-16" data-aos="fade-up">
+                <div>
+                    <h2 class="text-3xl md:text-4xl mb-6 leading-tight" style="font-weight:400;">Revenue Was There. Customers Weren't Coming Back.</h2>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.58);">
+                        Olist, Brazil's largest e-commerce platform, had 93,000 customers and $15.4M in revenue — but underneath the numbers was a structural retention crisis. 80% of customers never placed a second order. No one had quantified how much revenue was silently walking out the door.
+                    </p>
+                    <p class="text-sm font-light leading-relaxed mt-4" style="color:rgba(14,14,14,0.58);">
+                        This project was built to surface that number, identify which customer segments were driving it, and provide a prioritized action plan for re-engagement — backed by RFM scoring and cohort retention analysis across the full transaction history.
+                    </p>
+                    <div class="mt-8 space-y-3">
+                        <p class="text-xs font-medium" style="color:rgba(14,14,14,0.4);">Business questions answered:</p>
+                        <ul class="space-y-2">
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> Which customers are most valuable, and how are they segmented by behavior?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> What percentage of customers have churned, and how much revenue is at risk?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> Which RFM segments should be prioritized for re-engagement campaigns?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> When do customers churn — and is it consistent across all cohorts?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> What is the estimated revenue recovery potential from targeted campaigns?</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="thinking-card">
+                        <div class="thinking-num">Key Finding</div>
+                        <p class="serif italic text-xl mb-2">79.75% Revenue at Risk</p>
+                        <p class="text-xs font-light" style="color:rgba(14,14,14,0.5);">$12.3M out of $15.4M total revenue is tied to churned customers. At Risk and Cannot Lose Them segments alone account for 53% of that — $6.5M needing immediate action.</p>
+                    </div>
+                    <div class="thinking-card">
+                        <div class="thinking-num">Root Cause</div>
+                        <p class="serif italic text-xl mb-2">Month-1 Retention Collapse</p>
+                        <p class="text-xs font-light" style="color:rgba(14,14,14,0.5);">Cohort analysis across all monthly cohorts shows sub-1% month-1 retention — consistent across every signup month. The problem isn't seasonal. It's structural.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+
+    <!-- APPROACH -->
+    <section class="py-28 px-6" style="background:var(--dark);color:var(--cream);">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 mb-16">
+                <div class="md:col-span-3" data-aos="fade-right">
+                    <span class="section-label" style="color:rgba(240,244,245,0.25);">02 — Approach</span>
+                </div>
+                <div class="md:col-span-7" data-aos="fade-up">
+                    <h2 class="text-4xl md:text-5xl leading-tight" style="font-weight:400;">
+                        How I Framed <span class="text-accent italic">the Analysis</span>
+                    </h2>
+                    <p class="text-sm font-light mt-4 leading-relaxed" style="color:rgba(240,244,245,0.45);">
+                        A 4-phase SQL pipeline — from raw schema design through RFM scoring to cohort churn analysis — culminating in a 3-page Power BI dashboard with quantified business recommendations.
+                    </p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-4 gap-[1px]" style="background:rgba(240,244,245,0.08);" data-aos="fade-up">
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 01</span>
+                    <h4 class="serif italic text-xl mb-3">Build the Foundation</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Designed a normalized 8-table PostgreSQL schema with foreign keys and indexes. Loaded 500K+ rows from the Olist relational dataset — forcing real multi-table JOINs from day one.</p>
+                </div>
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 02</span>
+                    <h4 class="serif italic text-xl mb-3">Clean & Validate</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Null checks, duplicate detection, date logic validation, and revenue sanity checks. Created a <code>clean_orders</code> view — 96K delivered orders with valid timestamps and positive payments — as the single source of truth for all downstream analysis.</p>
+                </div>
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 03</span>
+                    <h4 class="serif italic text-xl mb-3">Score & Segment</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">RFM scoring using NTILE(4) window functions across Recency, Frequency, and Monetary dimensions. Combined scores into 9 behavioral segments — Champions, Loyal, At Risk, Lost, and five others — with CASE WHEN segmentation logic.</p>
+                </div>
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 04</span>
+                    <h4 class="serif italic text-xl mb-3">Quantify the Risk</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Churn flagging (90-day definition), cohort retention analysis by signup month, geographic breakdown by state, and revenue recovery estimates at 20% re-engagement — turning findings into an actionable campaign priority matrix.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+
+    <!-- PROCESS -->
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right">
+                <span class="section-label">03 — Process</span>
+            </div>
+            <div class="md:col-span-8 space-y-12" data-aos="fade-up">
+                <div class="process-step pb-12">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">01 / Schema Design & Data Loading</span>
+                    <h4 class="text-xl font-semibold mb-3">A real relational database, not a flat table</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
+                        Designed a normalized PostgreSQL schema with 8 tables, proper foreign keys, and indexes before loading a single row. Load order was critical — customers and sellers before orders, orders before items and payments. Resolved FK violations and column naming mismatches during import.
+                    </p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">PostgreSQL</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Schema Design</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Foreign Keys</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Indexing</span>
+                    </div>
+                </div>
+                <div class="process-step pb-12">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">02 / Data Exploration & Cleaning</span>
+                    <h4 class="text-xl font-semibold mb-3">Validating every assumption before analysis</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
+                        Null checks across all key columns, duplicate order detection, date logic validation (delivered before purchased), and revenue sanity checks. Built the <code>clean_orders</code> view filtering to delivered orders with valid timestamps and positive payment values — 96,478 records forming the analysis foundation.
+                    </p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">NULL Checks</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Date Validation</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Views</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">FILTER WHERE</span>
+                    </div>
+                </div>
+                <div class="process-step pb-12">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">03 / RFM Segmentation</span>
+                    <h4 class="text-xl font-semibold mb-3">Window functions and CTEs as the centerpiece</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
+                        Computed Recency (days since last order), Frequency (order count), and Monetary (total spend) per customer using a multi-CTE pipeline. Scored each dimension 1–4 using <code>NTILE(4)</code> window functions, then applied <code>CASE WHEN</code> segmentation logic to classify 93K customers into 9 behavioral groups. Saved as a materialized table for fast downstream querying.
+                    </p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">CTEs</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">NTILE()</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">RANK()</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">PARTITION BY</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">CASE WHEN</span>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">04 / Churn Analysis & Recommendations</span>
+                    <h4 class="text-xl font-semibold mb-3">From observation to quantified action plan</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
+                        Defined churn as no purchase in 90 days. Built a cohort retention table using <code>DATE_TRUNC</code> to track re-purchase rates by signup month — revealing sub-1% month-1 retention across all cohorts. Geographic breakdown identified SP as the dominant churn state at $4.83M. Revenue recovery estimates at 20% re-engagement produced a ranked campaign priority matrix.
+                    </p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">DATE_TRUNC</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Cohort Analysis</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">CROSS JOIN</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">AGE()</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+
+    <!-- DASHBOARD -->
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 mb-16">
+                <div class="md:col-span-3" data-aos="fade-right">
+                    <span class="section-label">04 — Deliverables</span>
+                </div>
+                <div class="md:col-span-7" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl mb-4" style="font-weight:400;">SQL Pipeline + Power BI Dashboard</h2>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
+                        Four documented SQL files covering schema design through business recommendations, paired with a 3-page Power BI dashboard translating the analysis into an executive-ready visual story.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dashboard preview -->
+            <div class="mb-3" data-aos="fade-up">
+                <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-3" style="color:rgba(14,14,14,0.3);">Power BI Dashboard — 3 Pages</span>
+            </div>
+            <div class="mb-4 space-y-4" data-aos="fade-up">
+                <div class="mb-2">
+                    <span class="mono text-[0.55rem] tracking-[0.15em] uppercase" style="color:rgba(14,14,14,0.3);">Page 1 — Executive Summary</span>
+                </div>
+                <img src="https://raw.githubusercontent.com/unochifarah/E-commerce-Customer-Behavior-Analysis/main/dashboard/olist_customer_analysis-0001.jpg" alt="Executive Summary Dashboard" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+                <div class="mb-2 mt-6">
+                    <span class="mono text-[0.55rem] tracking-[0.15em] uppercase" style="color:rgba(14,14,14,0.3);">Page 2 — RFM Segmentation</span>
+                </div>
+                <img src="https://raw.githubusercontent.com/unochifarah/E-commerce-Customer-Behavior-Analysis/main/dashboard/olist_customer_analysis-0002.jpg" alt="RFM Segmentation Dashboard" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+                <div class="mb-2 mt-6">
+                    <span class="mono text-[0.55rem] tracking-[0.15em] uppercase" style="color:rgba(14,14,14,0.3);">Page 3 — Churn & Retention</span>
+                </div>
+                <img src="https://raw.githubusercontent.com/unochifarah/E-commerce-Customer-Behavior-Analysis/main/dashboard/olist_customer_analysis-0003.jpg" alt="Churn & Retention Dashboard" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+            </div>
+
+            <!-- Dashboard features -->
+            <div class="grid md:grid-cols-3 gap-[1px]" style="background:rgba(14,14,14,0.09);border:1px solid rgba(14,14,14,0.09);" data-aos="fade-up">
+                <div class="p-8" style="background:var(--cream);">
+                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Page 1</span>
+                    <h4 class="font-semibold text-sm mb-2">Executive Summary</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Total revenue, revenue at risk, and customers at risk KPI cards. Donut chart of campaign priority breakdown. Bar chart of revenue by RFM segment.</p>
+                </div>
+                <div class="p-8" style="background:var(--cream);">
+                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Page 2</span>
+                    <h4 class="font-semibold text-sm mb-2">RFM Segmentation</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Customer distribution donut by segment. Scatter plot of avg spend vs avg orders revealing segment positioning. Full segment summary table with recency, frequency, and monetary metrics.</p>
+                </div>
+                <div class="p-8" style="background:var(--cream);">
+                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Page 3</span>
+                    <h4 class="font-semibold text-sm mb-2">Churn & Retention</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Churned revenue by segment bar chart. Geographic treemap showing SP's $4.83M dominance. Cohort retention line chart with near-vertical drop at month 1 — the single most powerful visual in the project.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+
+    <!-- KEY FINDINGS -->
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 mb-16">
+                <div class="md:col-span-3" data-aos="fade-right">
+                    <span class="section-label">05 — Key Findings</span>
+                </div>
+            </div>
+            <div class="insight-block p-12 md:p-20" data-aos="fade-up">
+                <div class="grid md:grid-cols-2 gap-16">
+                    <div>
+                        <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-6" style="color:var(--red);">Churn & Revenue at Risk</span>
+                        <h3 class="serif italic text-2xl mb-5 leading-tight">80% of customers churned. 79.75% of revenue is at risk.</h3>
+                        <ul class="space-y-3">
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>$12.3M out of $15.4M total revenue tied to churned customers</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>At Risk segment: highest churned revenue at $3.5M</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Champion segment: only 21% churn — the sole protected group</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>SP state alone accounts for $4.83M churned — 3x second-highest RJ ($1.81M)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-6" style="color:var(--red);">Cohort Retention</span>
+                        <h3 class="serif italic text-2xl mb-5 leading-tight">Sub-1% month-1 retention across every cohort — without exception.</h3>
+                        <ul class="space-y-3">
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>January 2017 cohort: 717 customers → 2 returned in month 1 (0.28%)</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>February 2017 cohort: 1,628 customers → 3 returned in month 1 (0.18%)</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Pattern consistent across all cohorts — not seasonal, structural</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>20% re-engagement on At Risk alone = estimated $708K recovered</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Potential Loyalist (23K customers, 60% churn) = highest conversion upside</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+
+    <!-- OUTCOMES -->
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right">
+                <span class="section-label">06 — Outcomes</span>
+            </div>
+            <div class="md:col-span-9" data-aos="fade-up">
+                <div class="grid md:grid-cols-3 gap-12 mb-16">
+                    <div class="outcome-stat pb-6">
+                        <span class="serif italic text-5xl block mb-3">$12.3M</span>
+                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">in at-risk revenue identified and quantified — 79.75% of total revenue, previously invisible without segment-level churn analysis.</p>
+                    </div>
+                    <div class="outcome-stat pb-6">
+                        <span class="serif italic text-5xl block mb-3">80.17%</span>
+                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">customer churn rate confirmed across 93K customers — with cohort analysis proving the retention failure is structural, not seasonal.</p>
+                    </div>
+                    <div class="outcome-stat pb-6">
+                        <span class="serif italic text-5xl block mb-3">$1.3M</span>
+                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">estimated recovery potential at 20% re-engagement across At Risk and Cannot Lose Them segments — a concrete, data-backed campaign target.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+
+    <!-- REFLECTION -->
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right">
+                <span class="section-label">07 — Reflection</span>
+            </div>
+            <div class="md:col-span-9 grid md:grid-cols-2 gap-10" data-aos="fade-up">
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 01</div>
+                    <h4 class="font-semibold text-base mb-3">The retention problem was hiding in plain sight</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">$15.4M in revenue looked healthy until cohort analysis revealed that 80% of customers never came back. Top-line numbers are almost always misleading. The insight only appeared when I stopped aggregating and started tracking individual customer journeys over time.</p>
+                </div>
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 02</div>
+                    <h4 class="font-semibold text-base mb-3">A clean view is worth more than raw tables</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">Creating the <code>clean_orders</code> view upfront — filtering once for delivered orders, valid timestamps, and positive payments — made every downstream query simpler and more trustworthy. Spending time on data quality before analysis is never wasted.</p>
+                </div>
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 03</div>
+                    <h4 class="font-semibold text-base mb-3">Segments only matter if you act on them</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">Knowing a customer is "At Risk" is an observation. Knowing there are 17,579 of them, they last bought 278 days ago, they're worth $201 each, and a 20% recovery rate yields $708K — that's a campaign brief. The analysis was only complete once every finding had a dollar sign next to it.</p>
+                </div>
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 04</div>
+                    <h4 class="font-semibold text-base mb-3">One intervention point explains everything</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">The cohort data showed the entire churn problem concentrated at month 0→1. That single finding collapsed a complex retention analysis into one concrete recommendation: a post-purchase email sequence within 7 days of first delivery. The simplest interventions are usually the ones the data points to.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+
+<!-- NEXT PROJECT CTA -->
+<section class="py-20 px-6" style="background:var(--dark);color:var(--cream);">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+        <div>
+            <span class="mono text-[0.6rem] tracking-[0.3em] uppercase block mb-3" style="color:rgba(240,244,245,0.25);">Next Case Study</span>
+            <h3 class="serif italic text-3xl md:text-4xl">Coming Soon →</h3>
+        </div>
+        <div class="flex gap-6">
+            <a href="index.html#work" class="btn-outline" style="border-color:rgba(240,244,245,0.25);color:rgba(240,244,245,0.6);">All Work</a>
+            <a href="index.html#contact" class="btn-outline">Get in Touch</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="pt-20 pb-10 px-6" style="background:var(--dark);color:var(--cream);border-top:1px solid rgba(240,244,245,0.07);">
+    <div class="max-w-7xl mx-auto flex justify-between items-center text-[10px] uppercase tracking-[0.3em] font-medium" style="color:rgba(240,244,245,0.28);">
+        <div class="flex items-center gap-3">
+            <span class="h-2 w-2 rounded-full animate-pulse" style="background:var(--red);"></span>
+            <span>Open to Opportunities</span>
+        </div>
+        <p>&copy; Unochi Farah</p>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof AOS !== 'undefined') {
+            AOS.init({ duration: 1000, once: true });
+        }
+    });
+    window.addEventListener('scroll', function() {
+        let s = document.body.scrollTop || document.documentElement.scrollTop;
+        let h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById("progress-bar").style.width = (s / h * 100) + "%";
+    });
+</script>
+</body>
+</html>
