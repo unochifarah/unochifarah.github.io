@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study 03 — Supply Chain Logistics Cost & Efficiency Analysis | Unochi Farah</title>
+    <meta name="description" content="Multi-source Power Query transformation pipeline across 7 tables and 209K orders. Identified carrier inefficiencies, warehouse bottlenecks, and a discontinued carrier data integrity issue.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root { --cream:#F0F4F5; --red:#CB001D; --dark:#0E0E0E; }
+        html { scroll-behavior: smooth; }
+        body { font-family:'Plus Jakarta Sans',sans-serif; background-color:var(--cream); color:var(--dark); overflow-x:hidden; }
+        h1,h2,h3,h4,.serif { font-family:'DM Serif Display',serif; }
+        code,.mono { font-family:'DM Mono',monospace; }
+        .text-accent { color:var(--red); }
+        #progress-bar { height:3px; background:var(--red); position:fixed; top:0; left:0; z-index:100; transition:width 0.1s; }
+        .grid-bg { background-image:linear-gradient(rgba(14,14,14,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,14,14,0.055) 1px,transparent 1px); background-size:30px 30px; background-color:var(--cream); }
+        .nav-link { position:relative; transition:color 0.3s; font-weight:500; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; }
+        .nav-link:hover { color:var(--red); }
+        .nav-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:-4px; left:0; background-color:var(--red); transition:width 0.3s ease; }
+        .nav-link:hover::after { width:100%; }
+        .stat-block { border-left:2px solid var(--red); padding-left:1.2rem; }
+        .section-label { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:rgba(14,14,14,0.3); }
+        .insight-block { background:var(--dark); color:var(--cream); position:relative; overflow:hidden; }
+        .insight-block::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:radial-gradient(circle,rgba(203,0,29,0.12) 0%,transparent 70%); pointer-events:none; }
+        .process-step { border-left:1px solid rgba(14,14,14,0.1); padding-left:2rem; position:relative; }
+        .process-step::before { content:''; position:absolute; left:-4px; top:4px; width:7px; height:7px; border-radius:50%; background:var(--red); }
+        .thinking-card { border:1px solid rgba(14,14,14,0.09); padding:2rem; background:var(--cream); position:relative; overflow:hidden; transition:border-color 0.25s; }
+        .thinking-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform 0.35s ease; }
+        .thinking-card:hover { border-color:rgba(14,14,14,0.2); }
+        .thinking-card:hover::after { transform:scaleX(1); }
+        .thinking-num { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--red); letter-spacing:0.15em; margin-bottom:0.75rem; }
+        .outcome-stat { position:relative; }
+        .outcome-stat::after { content:''; position:absolute; bottom:-1px; left:0; width:1.5rem; height:2px; background:var(--red); }
+        .reflection-tag { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); border:1px solid rgba(203,0,29,0.25); padding:0.2rem 0.52rem; display:inline-block; margin-bottom:0.75rem; }
+        .btn-outline { border:1.5px solid var(--cream); padding:11px 26px; transition:0.35s; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; display:inline-block; color:var(--cream); }
+        .btn-outline:hover { background:var(--red); border-color:var(--red); color:var(--cream); transform:translateY(-2px); }
+        hr.section-rule { border:none; border-top:1px solid rgba(14,14,14,0.08); margin:0; }
+        @keyframes fadeSlideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+        .hero-animate   { animation:fadeSlideUp 0.9s ease forwards; }
+        .hero-animate-2 { animation:fadeSlideUp 0.9s 0.2s ease forwards; opacity:0; }
+    </style>
+</head>
+<body>
+<div id="progress-bar" style="width:0%"></div>
+<nav class="fixed w-full z-50 backdrop-blur-md border-b px-6 py-5" style="background:rgba(240,244,245,0.92);border-color:rgba(14,14,14,0.08);">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="index.html" class="text-lg uppercase tracking-tight" style="font-weight:600;letter-spacing:-0.02em;">Unochi Farah<span class="text-accent">.</span></a>
+        <div class="flex gap-8 md:gap-12 items-center">
+            <a href="index.html#work" class="nav-link">← All Work</a>
+            <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+    </div>
+</nav>
+<header class="flex items-end pb-20 pt-36 grid-bg px-6">
+    <div class="max-w-7xl mx-auto w-full">
+        <div class="hero-animate">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="mono text-[0.6rem] tracking-[0.3em] uppercase" style="color:rgba(14,14,14,0.3);">Case Study</span>
+                <span style="width:2rem;height:1px;background:var(--red);display:inline-block;"></span>
+                <span class="mono text-[0.6rem] tracking-[0.3em] uppercase" style="color:rgba(14,14,14,0.3);">03</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl leading-[1.15] mb-10" style="font-weight:400;max-width:26ch;">
+                Supply Chain <span class="text-accent italic">Logistics</span> Cost & Efficiency Analysis
+            </h1>
+        </div>
+        <div class="hero-animate-2 grid md:grid-cols-4 gap-8 mt-12 pt-10" style="border-top:1px solid rgba(14,14,14,0.09);">
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Tools</span>
+                <span class="font-medium text-sm">Power Query · Excel · Power BI</span>
+            </div>
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Dataset</span>
+                <span class="font-medium text-sm">209K Order Lines · 7 Tables</span>
+            </div>
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Coverage</span>
+                <span class="font-medium text-sm">7 Warehouses · 3 Carriers · 3 Routes</span>
+            </div>
+            <div class="stat-block">
+                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Source</span>
+                <span class="font-medium text-sm">Brunel University London</span>
+            </div>
+        </div>
+    </div>
+</header>
+<hr class="section-rule">
+<article>
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right"><span class="section-label">01 — Context</span></div>
+            <div class="md:col-span-9 md:col-start-4 grid md:grid-cols-2 gap-16" data-aos="fade-up">
+                <div>
+                    <h2 class="text-3xl md:text-4xl mb-6 leading-tight" style="font-weight:400;">Seven Tables. One Pipeline. A Discontinued Carrier Nobody Noticed.</h2>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.58);">This dataset from Brunel University London isn't a single clean spreadsheet — it's seven separate files representing a real logistics operation: orders, freight rates, warehouse costs, capacity limits, plant-to-port mappings, and customer routing rules. None of it is pre-joined. None of it is ready to analyse.</p>
+                    <p class="text-sm font-light leading-relaxed mt-4" style="color:rgba(14,14,14,0.58);">The project required building a transformation pipeline in Power Query that merged all seven tables into a single analysis-ready model — then using that model to answer the four operational questions any logistics manager actually needs answered: who to ship with, which warehouse is overloaded, which routes are bleeding money, and where new orders should go.</p>
+                    <div class="mt-8 space-y-3">
+                        <p class="text-xs font-medium" style="color:rgba(14,14,14,0.4);">Business questions answered:</p>
+                        <ul class="space-y-2">
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span>Which carrier has the best cost-to-speed ratio?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span>Which warehouse is closest to hitting max capacity?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span>Which routes are consistently over budget?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span>Where should new orders be routed given current warehouse loads?</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span>How should a discontinued carrier be handled without silently dropping data?</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="thinking-card">
+                        <div class="thinking-num">Key Finding</div>
+                        <p class="serif italic text-xl mb-2">V444_0 Scores 6× Better</p>
+                        <p class="text-xs font-light" style="color:rgba(14,14,14,0.5);">V444_1 costs $22.94 per shipment vs V444_0's $3.86 — with only a 2.5 percentage point improvement in on-time rate. The Cost-to-Speed Score ($3.97 vs $23.04) makes the decision clear: V444_0 is the better carrier by every meaningful metric.</p>
+                    </div>
+                    <div class="thinking-card">
+                        <div class="thinking-num">Data Integrity Issue</div>
+                        <p class="serif italic text-xl mb-2">Carrier V44_3 — 854 Orphaned Orders</p>
+                        <p class="text-xs font-light" style="color:rgba(14,14,14,0.5);">V44_3 exists in the order history but has no freight rate data — a discontinued carrier mid-operation. Instead of silently dropping the rows, the pipeline flags them with a Carrier_Status column and preserves them for documentation. A real data integrity decision, not a workaround.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+    <section class="py-28 px-6" style="background:var(--dark);color:var(--cream);">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 mb-16">
+                <div class="md:col-span-3" data-aos="fade-right"><span class="section-label" style="color:rgba(240,244,245,0.25);">02 — Approach</span></div>
+                <div class="md:col-span-7" data-aos="fade-up">
+                    <h2 class="text-4xl md:text-5xl leading-tight" style="font-weight:400;">How I Framed <span class="text-accent italic">the Pipeline</span></h2>
+                    <p class="text-sm font-light mt-4 leading-relaxed" style="color:rgba(240,244,245,0.45);">A 3-layer build — Power Query transformation pipeline, Excel pivot analysis, Power BI dashboard — each layer feeding cleanly into the next, with no duplicated logic across tools.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-4 gap-[1px]" style="background:rgba(240,244,245,0.08);" data-aos="fade-up">
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 01</span>
+                    <h4 class="serif italic text-xl mb-3">Load & Inspect</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">All 7 source files loaded as Connection Only queries — raw copies preserved before any transformation. Data types set manually. Join key columns trimmed to prevent invisible whitespace from silently breaking merges downstream.</p>
+                </div>
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 02</span>
+                    <h4 class="serif italic text-xl mb-3">Merge & Enrich</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Five-step Left Outer Join sequence — OrderList as the fact table, enriched with FreightRates, PlantPorts, WarehouseData, ProductsPerPlant, and VmiCustomers. Row count verified after each merge to catch silent join failures.</p>
+                </div>
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 03</span>
+                    <h4 class="serif italic text-xl mb-3">Calculate & Flag</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Freight cost calculated using List.Max to apply the minimum cost floor — replicating real carrier billing logic. V44_3 flagged with a Carrier_Status column. Delivery status, route key, and cost-per-unit columns added before load.</p>
+                </div>
+                <div class="p-8" style="background:var(--dark);">
+                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Phase 04</span>
+                    <h4 class="serif italic text-xl mb-3">Analyse & Visualise</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Excel pivot tables across carrier, warehouse, and route dimensions. Power BI connected directly to MasterOrders — DAX measures for Cost-to-Speed Score and on-time rate. Four-page interactive dashboard with slicers on every page.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right"><span class="section-label">03 — Process</span></div>
+            <div class="md:col-span-8 space-y-12" data-aos="fade-up">
+                <div class="process-step pb-12">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">01 / Data Loading & Schema Inspection</span>
+                    <h4 class="text-xl font-semibold mb-3">Seven files. Seven different structures. One pipeline.</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">Each source file had its own column naming conventions, inconsistent capitalisation, and varying data types. Every join key column — Carrier, Plant Code, Service Level, Origin Port, Destination Port — was trimmed and typed manually before any merge was attempted. Invisible whitespace in join keys is one of the most common and hardest-to-diagnose causes of silent merge failures in Power Query.</p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Power Query</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Connection Only</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Data Type Enforcement</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Text.Trim</span>
+                    </div>
+                </div>
+                <div class="process-step pb-12">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">02 / The V44_3 Problem</span>
+                    <h4 class="text-xl font-semibold mb-3">A discontinued carrier — and a deliberate handling decision</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">During the FreightRates merge, 854 orders returned null on every rate column — all V44_3 orders. This carrier existed in the order history but had been discontinued, leaving no rate card data. Rather than dropping the rows or imputing values without disclosure, I retained all 854 orders and added a <code>Carrier_Status</code> column flagging them as "Discontinued". The decision is documented, the data is preserved, and every downstream analysis can filter explicitly.</p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Left Outer Join</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Null Handling</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Conditional Column</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Data Integrity</span>
+                    </div>
+                </div>
+                <div class="process-step pb-12">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">03 / Freight Cost Calculation</span>
+                    <h4 class="text-xl font-semibold mb-3">Replicating real carrier billing logic — not just Weight x Rate</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">Real carriers don't charge a flat per-kg rate — they charge the greater of (weight x rate) or a minimum cost floor. The Freight_Cost column uses <code>List.Max({[minimum cost], [Weight] * [rate]})</code> to replicate this exactly. For null-rate V44_3 orders, the formula returns null rather than zero — preserving the distinction between "no cost calculated" and "zero cost".</p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">List.Max{}</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Custom Column</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">if/then/else Logic</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Minimum Cost Floor</span>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">04 / Cost-to-Speed Score & Dashboard</span>
+                    <h4 class="text-xl font-semibold mb-3">A single metric that makes the carrier decision obvious</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">Average freight cost alone doesn't tell the full story — a cheap carrier that's always late isn't a bargain. The Cost-to-Speed Score (<code>Avg Cost x (1 + (1 - On-Time Rate))</code>) combines both dimensions into one number, penalising unreliability. Built as a DAX measure in Power BI and reproduced as an Excel formula for cross-validation. V444_0 scores $3.97. V444_1 scores $23.04. The recommendation writes itself.</p>
+                    <div class="flex gap-2 mt-4 flex-wrap">
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">DAX Measures</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">AVERAGE()</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Power BI</span>
+                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Pivot Tables</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 mb-16">
+                <div class="md:col-span-3" data-aos="fade-right"><span class="section-label">04 — Deliverables</span></div>
+                <div class="md:col-span-7" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl mb-4" style="font-weight:400;">Power Query Pipeline + Excel Analysis + Power BI Dashboard</h2>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">A fully documented Excel workbook with the 7-table Power Query pipeline, three pivot analysis tabs, and a connected 4-page Power BI dashboard — each layer building on the last with no duplicated logic.</p>
+                </div>
+            </div>
+            <div class="mb-3" data-aos="fade-up">
+                <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-3" style="color:rgba(14,14,14,0.3);">Power BI Dashboard — 4 Pages</span>
+            </div>
+            <div class="mb-4 space-y-4" data-aos="fade-up">
+                <div class="mb-2"><span class="mono text-[0.55rem] tracking-[0.15em] uppercase" style="color:rgba(14,14,14,0.3);">Page 1 — Executive Overview</span></div>
+                <img src="https://raw.githubusercontent.com/unochifarah/Supply-Chain-Logistics-Analysis/main/Dashboard/Supply_Chain_Logistics_Cost_Efficiency_Analysis-0001.jpg" alt="Executive Overview" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+                <div class="mb-2 mt-6"><span class="mono text-[0.55rem] tracking-[0.15em] uppercase" style="color:rgba(14,14,14,0.3);">Page 2 — Carrier Performance Analysis</span></div>
+                <img src="https://raw.githubusercontent.com/unochifarah/Supply-Chain-Logistics-Analysis/main/Dashboard/Supply_Chain_Logistics_Cost_Efficiency_Analysis-0002.jpg" alt="Carrier Performance" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+                <div class="mb-2 mt-6"><span class="mono text-[0.55rem] tracking-[0.15em] uppercase" style="color:rgba(14,14,14,0.3);">Page 3 — Warehouse Analysis</span></div>
+                <img src="https://raw.githubusercontent.com/unochifarah/Supply-Chain-Logistics-Analysis/main/Dashboard/Supply_Chain_Logistics_Cost_Efficiency_Analysis-0003.jpg" alt="Warehouse Analysis" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+                <div class="mb-2 mt-6"><span class="mono text-[0.55rem] tracking-[0.15em] uppercase" style="color:rgba(14,14,14,0.3);">Page 4 — Route Analysis</span></div>
+                <img src="https://raw.githubusercontent.com/unochifarah/Supply-Chain-Logistics-Analysis/main/Dashboard/Supply_Chain_Logistics_Cost_Efficiency_Analysis-0004.jpg" alt="Route Analysis" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(14,14,14,0.09);border:1px solid rgba(14,14,14,0.09);" data-aos="fade-up">
+                <div class="p-8" style="background:var(--cream);">
+                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Page 1</span>
+                    <h4 class="font-semibold text-sm mb-2">Executive Overview</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Total freight cost, on-time rate, total orders, avg cost per shipment KPI cards. Freight cost by carrier and delivery status bar chart. On-time vs late donut with carrier slicer.</p>
+                </div>
+                <div class="p-8" style="background:var(--cream);">
+                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Page 2</span>
+                    <h4 class="font-semibold text-sm mb-2">Carrier Performance</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Avg cost per shipment bar chart. Carrier scorecard with on-time rate and total orders. Cost-to-Speed Score comparison table — the single metric that decides carrier selection.</p>
+                </div>
+                <div class="p-8" style="background:var(--cream);">
+                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Page 3</span>
+                    <h4 class="font-semibold text-sm mb-2">Warehouse Analysis</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Order volume by plant bar chart showing PLANT03's dominance. Full warehouse scorecard with on-time rates, daily capacity, and freight cost. Plant Code slicer for drill-down.</p>
+                </div>
+                <div class="p-8" style="background:var(--cream);">
+                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Page 4</span>
+                    <h4 class="font-semibold text-sm mb-2">Route Analysis</h4>
+                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Avg freight cost by route bar chart — PORT09 to PORT09 anomaly visible at $1,713 avg. Route breakdown table showing the full picture including the single-order PORT05 route.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 mb-16">
+                <div class="md:col-span-3" data-aos="fade-right"><span class="section-label">05 — Key Findings</span></div>
+            </div>
+            <div class="insight-block p-12 md:p-20" data-aos="fade-up">
+                <div class="grid md:grid-cols-2 gap-16">
+                    <div>
+                        <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-6" style="color:var(--red);">Carrier & Cost Efficiency</span>
+                        <h3 class="serif italic text-2xl mb-5 leading-tight">V444_1 costs 6x more. The on-time improvement doesn't justify it.</h3>
+                        <ul class="space-y-3">
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>V444_0 avg cost: $3.86 — V444_1 avg cost: $22.94 per shipment</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>On-time rate difference: 99.57% vs 97.06% — only 2.5 percentage points</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Cost-to-Speed Score: V444_0 = $3.97 — V444_1 = $23.04</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>V444_1 late shipments avg $30 — even more expensive when it fails</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Total freight spend: $2.41M across 209,402 orders at $11.54 avg</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-6" style="color:var(--red);">Warehouse & Route Risk</span>
+                        <h3 class="serif italic text-2xl mb-5 leading-tight">94% of orders through one warehouse. 99.9% through one route.</h3>
+                        <ul class="space-y-3">
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>PLANT03: 196,953 of 209,402 orders — single point of failure risk</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>PLANT08 on-time rate: 82.19% — the only plant below 95%</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>PORT09 to PORT09: 207 orders at $1,713 avg — 156x the main route cost</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>PORT04 to PORT09 handles 209,194 orders — a single-lane network</li>
+                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>V44_3: 854 orders with no freight cost — preserved and flagged, not dropped</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right"><span class="section-label">06 — Outcomes</span></div>
+            <div class="md:col-span-9" data-aos="fade-up">
+                <div class="grid md:grid-cols-3 gap-12 mb-16">
+                    <div class="outcome-stat pb-6">
+                        <span class="serif italic text-5xl block mb-3">6x</span>
+                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">cost efficiency gap between carriers — V444_0 at $3.97 Cost-to-Speed Score vs V444_1 at $23.04, with only a 2.5pp difference in on-time performance to show for the premium.</p>
+                    </div>
+                    <div class="outcome-stat pb-6">
+                        <span class="serif italic text-5xl block mb-3">854</span>
+                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">orphaned V44_3 orders identified, quantified, and preserved in the pipeline — a data integrity issue that most analysts would silently drop, documented and resolved with a deliberate handling decision.</p>
+                    </div>
+                    <div class="outcome-stat pb-6">
+                        <span class="serif italic text-5xl block mb-3">$2.41M</span>
+                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">in total freight spend mapped, attributed, and analysed across carrier, warehouse, and route dimensions — from seven disconnected source files to a single queryable model.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="section-rule">
+    <section class="py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-3" data-aos="fade-right"><span class="section-label">07 — Reflection</span></div>
+            <div class="md:col-span-9 grid md:grid-cols-2 gap-10" data-aos="fade-up">
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 01</div>
+                    <h4 class="font-semibold text-base mb-3">Silent failures are the worst kind</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">A left join that drops rows doesn't warn you. A whitespace character in a join key doesn't flag itself. The V44_3 discovery only happened because I checked row counts after every merge. Data pipelines fail quietly — building in verification steps after each stage isn't paranoia, it's the job.</p>
+                </div>
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 02</div>
+                    <h4 class="font-semibold text-base mb-3">Average cost is the wrong metric for carrier selection</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">V444_1's $22.94 average vs V444_0's $3.86 looks damning on its own — but it's incomplete. A carrier could be expensive and reliable, or cheap and unreliable. The Cost-to-Speed Score collapses both dimensions into one number and makes the decision unambiguous. Composite metrics almost always tell a clearer story than isolated ones.</p>
+                </div>
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 03</div>
+                    <h4 class="font-semibold text-base mb-3">Concentration risk is invisible until you measure it</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">94% of orders through one warehouse and 99.9% through one route didn't appear in any single column of the source data — it only became visible once the full picture was assembled. Aggregation reveals structure that row-level inspection never could. The most important finding in this project wasn't in the data, it was in what the data looked like from above.</p>
+                </div>
+                <div class="thinking-card">
+                    <div class="reflection-tag">Lesson 04</div>
+                    <h4 class="font-semibold text-base mb-3">Anomalies are the most interesting rows</h4>
+                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">PORT09 to PORT09 at $1,713 average and V44_3 with 854 null freight costs are outliers — the kind of rows most analysts filter away to keep charts clean. But both are telling a story. One is a potential data error worth $116K. The other is an operational gap in the carrier record. The anomalies are often where the most valuable questions live.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+<section class="py-20 px-6" style="background:var(--dark);color:var(--cream);">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+        <div>
+            <span class="mono text-[0.6rem] tracking-[0.3em] uppercase block mb-3" style="color:rgba(240,244,245,0.25);">Previous Case Study</span>
+            <h3 class="serif italic text-3xl md:text-4xl"><a href="case-study-02.html" style="color:inherit;text-decoration:none;">E-Commerce Customer Behavior →</a></h3>
+        </div>
+        <div class="flex gap-6">
+            <a href="index.html#work" class="btn-outline" style="border-color:rgba(240,244,245,0.25);color:rgba(240,244,245,0.6);">All Work</a>
+            <a href="index.html#contact" class="btn-outline">Get in Touch</a>
+        </div>
+    </div>
+</section>
+<footer class="px-6" style="background:var(--dark);color:var(--cream);">
+    <div class="max-w-7xl mx-auto" style="padding-top:5rem;padding-bottom:2.5rem;border-top:1px solid rgba(240,244,245,0.07);margin-top:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;text-transform:uppercase;letter-spacing:0.3em;font-weight:500;color:rgba(240,244,245,0.28);">
+            <div class="flex items-center gap-3">
+                <span class="h-2 w-2 rounded-full animate-pulse" style="background:var(--red);"></span>
+                <span>Open to Opportunities</span>
+            </div>
+            <p>&copy; Unochi Farah</p>
+        </div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', function() {
+        let s = document.body.scrollTop || document.documentElement.scrollTop;
+        let h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById("progress-bar").style.width = (s / h * 100) + "%";
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) entry.target.classList.add('aos-animate');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('[data-aos]').forEach(function(el) { observer.observe(el); });
+    });
+</script>
+</body>
+</html>
