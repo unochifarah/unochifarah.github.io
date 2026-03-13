@@ -64,28 +64,148 @@
     </div>
 </nav>
 <!-- HERO -->
-<section class="min-h-screen flex items-center pt-24 grid-bg px-6">
+<section class="pt-36 pb-24 grid-bg px-6">
     <div class="max-w-7xl mx-auto w-full">
-        <div data-aos="fade-up">
-            <h1 class="text-6xl md:text-8xl leading-none mb-10" style="font-weight:400;line-height:0.82;">
-                Data <span class="text-accent italic">Analytics</span>
-                <br>
-                &amp; Predictive Strategy.
-            </h1>
-            <p class="text-base max-w-xl font-light leading-relaxed mb-12" style="color:rgba(14,14,14,0.58);">
-                Helping businesses
-                <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:4px;">reduce inefficiencies</span>
-                and
-                <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:4px;">predict revenue risk</span>
-                through professional SQL &amp; Python modeling. Built dashboards used in executive-level decision making.
-            </p>
-            <div class="flex flex-wrap gap-5">
-                <a href="#work" class="btn-outline">View Case Studies</a>
-                <a href="https://www.linkedin.com/in/jasmine-unochi-4613a3169/" target="_blank" rel="noopener noreferrer" class="btn-outline btn-outline-secondary">Get in Touch</a>
+        <div data-aos="fade-up" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
+            <div>
+                <h1 class="text-6xl md:text-8xl leading-none mb-10" style="font-weight:400;line-height:1.05;">
+                    Data <span class="text-accent italic">Analytics</span>
+                    <br>
+                    &amp; Predictive Strategy.
+                </h1>
+                <p class="text-base max-w-xl font-light leading-relaxed mb-0" style="color:rgba(14,14,14,0.58);">
+                    Helping businesses
+                    <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:4px;">reduce inefficiencies</span>
+                    and
+                    <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:4px;">predict revenue risk</span>
+                    through professional SQL &amp; Python modeling. Built dashboards used in executive-level decision making.
+                </p>
+                <div class="flex flex-wrap gap-4 mt-16">
+                    <a href="#work" class="btn-outline">View Case Studies</a>
+                    <a href="https://www.linkedin.com/in/jasmine-unochi-4613a3169/" target="_blank" rel="noopener noreferrer" class="btn-outline btn-outline-secondary">Get in Touch</a>
+                </div>
+            </div>
+            <!-- INTERACTIVE GRAPHIC -->
+            <div style="display:flex;align-items:center;justify-content:center;">
+                <canvas id="hero-canvas" width="480" height="480" style="width:100%;max-width:480px;cursor:crosshair;"></canvas>
             </div>
         </div>
     </div>
 </section>
+<script>
+(function(){
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const RED = '#CB001D', DARK = '#0E0E0E', CREAM = '#F0F4F5';
+    let mouse = { x: W/2, y: H/2 };
+    const NODES = 28;
+    const nodes = Array.from({length: NODES}, (_, i) => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        r: Math.random() * 2.5 + 1.5,
+        red: i < 5
+    }));
+    canvas.addEventListener('mousemove', e => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = W / rect.width;
+        const scaleY = H / rect.height;
+        mouse.x = (e.clientX - rect.left) * scaleX;
+        mouse.y = (e.clientY - rect.top) * scaleY;
+    });
+    canvas.addEventListener('mouseleave', () => {
+        mouse.x = W/2; mouse.y = H/2;
+    });
+    canvas.addEventListener('click', e => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = W / rect.width;
+        const scaleY = H / rect.height;
+        const cx = (e.clientX - rect.left) * scaleX;
+        const cy = (e.clientY - rect.top) * scaleY;
+        nodes.push({
+            x: cx, y: cy,
+            vx: (Math.random()-0.5)*1.2,
+            vy: (Math.random()-0.5)*1.2,
+            r: 3, red: true
+        });
+        if (nodes.length > NODES + 10) nodes.splice(0, 1);
+    });
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        // mouse influence
+        nodes.forEach(n => {
+            const dx = mouse.x - n.x, dy = mouse.y - n.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < 120 && dist > 0) {
+                const force = (120 - dist) / 120 * 0.4;
+                n.vx += (dx/dist) * force;
+                n.vy += (dy/dist) * force;
+            }
+            n.vx *= 0.98; n.vy *= 0.98;
+            n.x += n.vx; n.y += n.vy;
+            if (n.x < 0 || n.x > W) n.vx *= -1;
+            if (n.y < 0 || n.y > H) n.vy *= -1;
+            n.x = Math.max(0, Math.min(W, n.x));
+            n.y = Math.max(0, Math.min(H, n.y));
+        });
+        // draw connections
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i+1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x;
+                const dy = nodes[i].y - nodes[j].y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 110) {
+                    const alpha = (1 - dist/110) * 0.45;
+                    const isRed = nodes[i].red || nodes[j].red;
+                    ctx.beginPath();
+                    ctx.strokeStyle = isRed
+                        ? `rgba(203,0,29,${alpha})`
+                        : `rgba(14,14,14,${alpha * 0.6})`;
+                    ctx.lineWidth = isRed ? 1.2 : 0.7;
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        // mouse connections
+        nodes.forEach(n => {
+            const dx = mouse.x - n.x, dy = mouse.y - n.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < 100) {
+                const alpha = (1 - dist/100) * 0.6;
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(203,0,29,${alpha})`;
+                ctx.lineWidth = 0.8;
+                ctx.moveTo(n.x, n.y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+            }
+        });
+        // draw nodes
+        nodes.forEach(n => {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+            ctx.fillStyle = n.red ? RED : DARK;
+            ctx.globalAlpha = n.red ? 0.9 : 0.5;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        });
+        // mouse dot
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 3.5, 0, Math.PI*2);
+        ctx.fillStyle = RED;
+        ctx.globalAlpha = 0.7;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
 <!-- ABOUT -->
 <section id="about" class="py-32 relative overflow-hidden px-6" style="background:var(--dark);color:var(--cream);">
     <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
