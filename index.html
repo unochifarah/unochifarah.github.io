@@ -4,31 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unochi Farah | Data Analyst | SQL & Python Specialist</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
         :root { --cream:#F0F4F5; --red-deep:#7A0114; --red:#CB001D; --dark:#0E0E0E; }
         html { scroll-snap-type:y proximity; scroll-behavior:smooth; }
         body { font-family:'Plus Jakarta Sans',sans-serif; background-color:var(--cream); color:var(--dark); overflow-x:hidden; }
         h1,h2,h3,.serif { font-family:'DM Serif Display',serif; }
         section,footer { scroll-snap-align:start; scroll-margin-top:5rem; }
-        .text-accent { color:var(--red); }
-        #progress-bar { height:3px; background:var(--red); position:fixed; top:0; left:0; z-index:100; }
-        .grid-bg { background-image:linear-gradient(rgba(14,14,14,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,14,14,0.055) 1px,transparent 1px); background-size:30px 30px; background-color:var(--cream); }
-        .nav-link { position:relative; transition:color 0.3s; font-weight:500; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; }
-        .nav-link:hover { color:var(--red); }
-        .nav-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:-4px; left:0; background-color:var(--red); transition:width 0.3s ease; }
-        .nav-link:hover::after { width:100%; }
         .btn-outline { border:1.5px solid var(--dark); padding:11px 26px; transition:0.35s; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; display:inline-block; color:var(--dark); }
         .btn-outline-secondary { border-color:rgba(14,14,14,0.35); }
         .btn-outline:hover { background:var(--red); border-color:var(--red); color:var(--cream); transform:translateY(-2px); }
-        .social-link { position:relative; padding-bottom:3px; transition:color 0.3s; }
-        .social-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:0; left:0; background-color:var(--red); transition:width 0.3s ease; }
-        .social-link:hover { color:var(--red); }
-        .social-link:hover::after { width:100%; }
-
-        /* UNLOCKED CARD */
         .project-card { display:block; position:relative; border:1px solid rgba(14,14,14,0.09); padding:2.2rem; overflow:hidden; text-decoration:none; color:inherit; background:var(--cream); transition:border-color 0.25s; }
         .project-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform 0.35s ease; }
         .project-card:hover { border-color:rgba(14,14,14,0.2); }
@@ -43,8 +31,6 @@
         .project-card:hover .project-arrow { color:var(--red); transform:translate(3px,-3px); }
         .project-impact { font-size:0.73rem; font-weight:500; color:rgba(14,14,14,0.55); border-top:1px solid rgba(14,14,14,0.07); padding-top:0.9rem; display:flex; align-items:center; gap:0.5rem; }
         .project-impact::before { content:''; display:inline-block; width:1.1rem; height:1px; background:var(--red); flex-shrink:0; }
-
-        /* LOCKED CARD */
         .project-card-locked { display:block; position:relative; border:1px solid rgba(14,14,14,0.09); padding:2.2rem; overflow:hidden; text-decoration:none; color:inherit; background:#e8ebec; cursor:not-allowed; filter:grayscale(1); user-select:none; }
         .project-card-locked::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(14,14,14,0.045) 3px,rgba(14,14,14,0.045) 4px); pointer-events:none; z-index:1; }
         .locked-overlay { position:absolute; inset:0; background:rgba(14,14,14,0.38); z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.6rem; transition:background 0.3s; }
@@ -54,8 +40,6 @@
         .lock-icon { font-size:2rem; line-height:1; display:block; }
         .locked-label { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase; color:rgba(240,244,245,0.9); font-weight:500; }
         .locked-badge { position:absolute; top:2.1rem; right:2.2rem; font-family:'DM Mono',monospace; font-size:0.5rem; letter-spacing:0.22em; text-transform:uppercase; background:rgba(14,14,14,0.75); color:rgba(240,244,245,0.55); padding:0.22rem 0.6rem; border:1px solid rgba(240,244,245,0.12); z-index:3; }
-
-        /* STACK */
         .stack-card { border-right:1px solid var(--dark); border-bottom:1px solid var(--dark); transition:background 0.4s; }
         .stack-card:hover { background:var(--dark); }
         .stack-card:hover .stack-title { color:var(--cream); }
@@ -66,9 +50,8 @@
         .stack-chip { font-size:0.62rem; font-weight:500; letter-spacing:0.08em; border:1px solid rgba(14,14,14,0.18); padding:0.2rem 0.6rem; transition:background 0.4s,color 0.4s,border-color 0.4s; color:var(--dark); }
     </style>
 </head>
-<body class="selection:bg-red-800 selection:text-white">
+<body>
 <div id="progress-bar" style="width:0%"></div>
-
 <!-- NAV -->
 <nav class="fixed w-full z-50 backdrop-blur-md border-b px-6 py-5" style="background:rgba(240,244,245,0.92);border-color:rgba(14,14,14,0.08);">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -80,17 +63,16 @@
         </div>
     </div>
 </nav>
-
 <!-- HERO -->
 <section class="min-h-screen flex items-center pt-24 grid-bg px-6">
     <div class="max-w-7xl mx-auto w-full">
-        <div data-aos="fade-up" data-aos-duration="1200">
-            <h1 class="text-6xl md:text-8xl lg:text-[9.5rem] leading-[0.82] mb-10" style="font-weight:400;">
+        <div data-aos="fade-up">
+            <h1 class="text-6xl md:text-8xl leading-none mb-10" style="font-weight:400;line-height:0.82;">
                 Data <span class="text-accent italic">Analytics</span>
-                <br class="hidden md:block">
+                <br>
                 &amp; Predictive Strategy.
             </h1>
-            <p class="text-base md:text-lg max-w-xl font-light leading-relaxed mb-12" style="color:rgba(14,14,14,0.58);">
+            <p class="text-base max-w-xl font-light leading-relaxed mb-12" style="color:rgba(14,14,14,0.58);">
                 Helping businesses
                 <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:4px;">reduce inefficiencies</span>
                 and
@@ -104,7 +86,6 @@
         </div>
     </div>
 </section>
-
 <!-- ABOUT -->
 <section id="about" class="py-32 relative overflow-hidden px-6" style="background:var(--dark);color:var(--cream);">
     <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
@@ -114,22 +95,19 @@
         <div class="space-y-5 font-light leading-relaxed pl-8" style="border-left:1px solid rgba(240,244,245,0.08);color:rgba(240,244,245,0.5);" data-aos="fade-left">
             <p>I am a Data Analyst driven by finding the narrative in numbers. I specialize in <span style="color:var(--cream);">T-SQL</span> and <span style="color:var(--cream);">Python</span> to build robust, automated data solutions.</p>
             <p>My focus is on <span style="color:var(--cream);">Efficiency</span> and <span style="color:var(--cream);">Impact</span> — ensuring that every dashboard I build leads directly to a measurable business decision.</p>
-            <a href="resume.pdf" class="inline-block mt-4 text-xs uppercase tracking-widest pb-1 transition-colors hover:text-accent" style="border-bottom:1px solid var(--red);color:var(--cream);">Download Resume →</a>
+            <a href="resume.pdf" class="inline-block mt-4 text-xs uppercase tracking-widest pb-1 transition-colors" style="border-bottom:1px solid var(--red);color:var(--cream);">Download Resume →</a>
         </div>
     </div>
 </section>
-
 <!-- WORK -->
 <section id="work" class="py-32 px-6">
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-baseline gap-4 mb-16">
             <h2 class="text-5xl uppercase tracking-tight" style="font-weight:600;letter-spacing:-0.02em;">Work</h2>
-            <div class="h-[1px] flex-grow hidden md:block" style="background:rgba(14,14,14,0.1);"></div>
+            <div style="height:1px;flex-grow:1;background:rgba(14,14,14,0.1);display:none;" class="md:block"></div>
             <span class="text-accent serif italic text-2xl" style="font-weight:400;">Selected Case Studies</span>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px]" style="background:rgba(14,14,14,0.09);border:1px solid rgba(14,14,14,0.09);" data-aos="fade-up">
-
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-\[1px\]" style="background:rgba(14,14,14,0.09);border:1px solid rgba(14,14,14,0.09);" data-aos="fade-up">
             <!-- 01 UNLOCKED -->
             <a href="project-one.html" class="project-card">
                 <span class="project-arrow">↗</span>
@@ -140,9 +118,8 @@
                 <div class="project-tools-row"><span class="tool-chip">Excel</span><span class="tool-chip">Power Query</span><span class="tool-chip">Tableau</span></div>
                 <div class="project-impact">$2.3M in revenue analyzed · 18.7% loss-order rate identified</div>
             </a>
-
             <!-- 02 UNLOCKED -->
-            <a href="project-two.html" class="project-card">
+            <a href="case-study-02.html" class="project-card">
                 <span class="project-arrow">↗</span>
                 <div class="project-num">02</div>
                 <div class="project-tag-pill">Customer Analytics</div>
@@ -151,17 +128,16 @@
                 <div class="project-tools-row"><span class="tool-chip">PostgreSQL</span><span class="tool-chip">Power BI</span></div>
                 <div class="project-impact">79.75% revenue at risk identified · 80% churn rate uncovered</div>
             </a>
-
-            <!-- 03 LOCKED -->
-            <div class="project-card-locked">
-                <div class="locked-badge">Locked</div>
+            <!-- 03 UNLOCKED -->
+            <a href="case-study-03.html" class="project-card">
+                <span class="project-arrow">↗</span>
                 <div class="project-num">03</div>
-                <div class="locked-overlay">
-                    <span class="lock-icon">🔒</span>
-                    <span class="locked-label">Coming Soon</span>
-                </div>
-            </div>
-
+                <div class="project-tag-pill">Logistics Analytics</div>
+                <h3 class="project-card-title">Supply Chain Logistics Cost & Efficiency Analysis</h3>
+                <p class="project-card-desc">7-table Power Query pipeline across 209K+ orders — identifying carrier inefficiencies, warehouse bottlenecks, and a discontinued carrier data integrity issue.</p>
+                <div class="project-tools-row"><span class="tool-chip">Power Query</span><span class="tool-chip">Excel</span><span class="tool-chip">Power BI</span></div>
+                <div class="project-impact">$2.41M freight spend mapped · V444_0 6× better cost-to-speed</div>
+            </a>
             <!-- 04 LOCKED -->
             <div class="project-card-locked">
                 <div class="locked-badge">Locked</div>
@@ -171,7 +147,6 @@
                     <span class="locked-label">Coming Soon</span>
                 </div>
             </div>
-
             <!-- 05 LOCKED -->
             <div class="project-card-locked">
                 <div class="locked-badge">Locked</div>
@@ -181,7 +156,6 @@
                     <span class="locked-label">Coming Soon</span>
                 </div>
             </div>
-
             <!-- 06 LOCKED -->
             <div class="project-card-locked">
                 <div class="locked-badge">Locked</div>
@@ -191,11 +165,9 @@
                     <span class="locked-label">Coming Soon</span>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
-
 <!-- STACK -->
 <section id="stack" class="py-32 px-6" style="border-top:1px solid rgba(14,14,14,0.08);">
     <div class="max-w-7xl mx-auto">
@@ -219,12 +191,11 @@
         </div>
     </div>
 </section>
-
 <!-- STRATEGIC OFFSET -->
 <section class="py-24 px-6" style="border-top:1px solid rgba(14,14,14,0.07);border-bottom:1px solid rgba(14,14,14,0.07);">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
         <div class="max-w-xl">
-            <h3 class="text-[10px] uppercase tracking-[0.5em] font-semibold text-accent mb-4">The Strategic Offset</h3>
+            <h3 style="font-size:10px;text-transform:uppercase;letter-spacing:0.5em;font-weight:600;color:var(--red);margin-bottom:1rem;">The Strategic Offset</h3>
             <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.58);">
                 I apply <span style="color:var(--dark);font-weight:500;">Systems Engineering</span> and <span style="color:var(--dark);font-weight:500;">Agile Iteration</span> to the data lifecycle. My background in C# and Logic Design allows me to build
                 <span style="color:var(--dark);font-weight:500;text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:2px;text-underline-offset:4px;">scalable data tools</span>
@@ -232,28 +203,27 @@
             </p>
         </div>
         <div class="flex flex-wrap gap-12">
-            <div class="text-center"><span class="block text-xl serif italic mb-1">Scalability</span><span class="text-[9px] uppercase tracking-widest" style="color:rgba(14,14,14,0.35);">Modular Architecture</span></div>
-            <div class="text-center pl-12" style="border-left:1px solid rgba(14,14,14,0.1);"><span class="block text-xl serif italic mb-1">Iteration</span><span class="text-[9px] uppercase tracking-widest" style="color:rgba(14,14,14,0.35);">Stakeholder-Led UX</span></div>
-            <div class="text-center pl-12" style="border-left:1px solid rgba(14,14,14,0.1);"><span class="block text-xl serif italic mb-1">Usability</span><span class="text-[9px] uppercase tracking-widest" style="color:rgba(14,14,14,0.35);">High-Adoption Tools</span></div>
+            <div class="text-center"><span class="block text-xl serif italic mb-1">Scalability</span><span style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(14,14,14,0.35);">Modular Architecture</span></div>
+            <div class="text-center pl-12" style="border-left:1px solid rgba(14,14,14,0.1);"><span class="block text-xl serif italic mb-1">Iteration</span><span style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(14,14,14,0.35);">Stakeholder-Led UX</span></div>
+            <div class="text-center pl-12" style="border-left:1px solid rgba(14,14,14,0.1);"><span class="block text-xl serif italic mb-1">Usability</span><span style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(14,14,14,0.35);">High-Adoption Tools</span></div>
         </div>
     </div>
 </section>
-
-<!-- FOOTER -->
+<!-- FOOTER / CONTACT -->
 <footer id="contact" class="pt-32 pb-12 px-6" style="background:var(--dark);color:var(--cream);">
     <div class="max-w-7xl mx-auto">
         <div class="grid lg:grid-cols-2 gap-24 mb-32">
             <div>
-                <h2 class="text-6xl md:text-8xl mb-8 italic serif leading-none" style="font-weight:400;">Let's <span class="text-accent">Connect</span></h2>
+                <h2 class="text-6xl md:text-8xl mb-8 italic serif" style="font-weight:400;line-height:1;">Let's <span class="text-accent">Connect</span></h2>
                 <p class="text-sm font-light leading-relaxed max-w-xs" style="color:rgba(240,244,245,0.4);">Currently accepting data roles focused on predictive strategy and business scaling.</p>
             </div>
             <div class="space-y-12">
                 <div>
-                    <h4 class="text-[10px] uppercase tracking-[0.4em] font-semibold mb-4" style="color:var(--red);">Direct Email</h4>
-                    <a href="mailto:unocharah@gmail.com" class="text-2xl md:text-4xl serif transition-colors duration-300" style="color:var(--cream);" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--cream)'">unocharah@gmail.com</a>
+                    <h4 style="font-size:10px;text-transform:uppercase;letter-spacing:0.4em;font-weight:600;margin-bottom:1rem;color:var(--red);">Direct Email</h4>
+                    <a href="mailto:unochifarah@gmail.com" class="text-2xl md:text-4xl serif" style="color:var(--cream);transition:color 0.3s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--cream)'">unochifarah@gmail.com</a>
                 </div>
                 <div>
-                    <h4 class="text-[10px] uppercase tracking-[0.4em] font-semibold mb-6" style="color:var(--red);">Social Ecosystem</h4>
+                    <h4 style="font-size:10px;text-transform:uppercase;letter-spacing:0.4em;font-weight:600;margin-bottom:1.5rem;color:var(--red);">Social Ecosystem</h4>
                     <div class="flex gap-10">
                         <a href="https://www.linkedin.com/in/jasmine-unochi-4613a3169/" target="_blank" rel="noopener noreferrer" class="social-link text-sm uppercase tracking-widest font-medium" style="color:var(--cream);">LinkedIn</a>
                         <a href="https://github.com/unochifarah" target="_blank" rel="noopener noreferrer" class="social-link text-sm uppercase tracking-widest font-medium" style="color:var(--cream);">GitHub</a>
@@ -261,24 +231,25 @@
                 </div>
             </div>
         </div>
-        <div class="pt-8 flex justify-between items-center text-[10px] uppercase tracking-[0.3em] font-medium" style="border-top:1px solid rgba(240,244,245,0.07);color:rgba(240,244,245,0.28);">
+        <div class="pt-8 flex justify-between items-center" style="border-top:1px solid rgba(240,244,245,0.07);font-size:10px;text-transform:uppercase;letter-spacing:0.3em;font-weight:500;color:rgba(240,244,245,0.28);">
             <div class="flex items-center gap-3"><span class="h-2 w-2 rounded-full animate-pulse" style="background:var(--red);"></span><span>Open to Opportunities</span></div>
             <p>&copy; Unochi Farah</p>
         </div>
     </div>
 </footer>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof AOS !== 'undefined') {
-            AOS.init({ duration:1000, once:true });
-        }
-    });
     window.addEventListener('scroll', function() {
         let s = document.body.scrollTop || document.documentElement.scrollTop;
         let h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        document.getElementById("progress-bar").style.width = (s/h*100)+"%";
+        document.getElementById("progress-bar").style.width = (s / h * 100) + "%";
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) entry.target.classList.add('aos-animate');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('[data-aos]').forEach(function(el) { observer.observe(el); });
     });
 </script>
 </body>

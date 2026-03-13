@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Case Study 02 — E-Commerce Customer Behavior Analysis | Unochi Farah</title>
     <meta name="description" content="RFM segmentation and churn prediction on 500K+ transactions from Olist Brazilian E-Commerce. 79.75% of revenue at risk identified using PostgreSQL and Power BI.">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
         :root { --cream:#F0F4F5; --red:#CB001D; --dark:#0E0E0E; }
         html { scroll-behavior: smooth; }
@@ -403,11 +404,12 @@
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
         <div>
             <span class="mono text-[0.6rem] tracking-[0.3em] uppercase block mb-3" style="color:rgba(240,244,245,0.25);">Next Case Study</span>
-            <h3 class="serif italic text-3xl md:text-4xl">Coming Soon →</h3>
+            <h3 class="serif italic text-3xl md:text-4xl">Supply Chain Logistics Analysis →</h3>
+            <p class="text-sm font-light mt-3" style="color:rgba(240,244,245,0.35);">7-table Power Query pipeline · freight cost analysis · Power BI</p>
         </div>
         <div class="flex gap-6">
             <a href="index.html#work" class="btn-outline" style="border-color:rgba(240,244,245,0.25);color:rgba(240,244,245,0.6);">All Work</a>
-            <a href="index.html#contact" class="btn-outline">Get in Touch</a>
+            <a href="project-three.html" class="btn-outline">View Case Study</a>
         </div>
     </div>
 </section>
@@ -423,17 +425,19 @@
     </div>
 </footer>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof AOS !== 'undefined') {
-            AOS.init({ duration: 1000, once: true });
-        }
-    });
     window.addEventListener('scroll', function() {
         let s = document.body.scrollTop || document.documentElement.scrollTop;
         let h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         document.getElementById("progress-bar").style.width = (s / h * 100) + "%";
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) entry.target.classList.add('aos-animate');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('[data-aos]').forEach(function(el) { observer.observe(el); });
     });
 </script>
 </body>

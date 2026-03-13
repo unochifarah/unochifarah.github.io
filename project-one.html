@@ -6,9 +6,10 @@
     <title>Case Study 01 — AWS SaaS Sales Analysis | Unochi Farah</title>
     <meta name="description" content="Analyzing 9,993 B2B SaaS transactions across 48 countries to surface discount impact, profitability drivers, and segment-level revenue trends.">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 
     <style>
         :root { --cream:#F0F4F5; --red:#CB001D; --dark:#0E0E0E; }
@@ -464,17 +465,19 @@
     </div>
 </footer>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof AOS !== 'undefined') {
-            AOS.init({ duration: 1000, once: true });
-        }
-    });
     window.addEventListener('scroll', function() {
         let s = document.body.scrollTop || document.documentElement.scrollTop;
         let h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         document.getElementById("progress-bar").style.width = (s / h * 100) + "%";
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) entry.target.classList.add('aos-animate');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('[data-aos]').forEach(function(el) { observer.observe(el); });
     });
 </script>
 </body>
