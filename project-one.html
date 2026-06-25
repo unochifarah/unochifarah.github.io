@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Study 01 — AWS SaaS Sales Analysis | Unochi Farah</title>
-    <meta name="description" content="Analyzing 9,993 B2B SaaS transactions across 48 countries to surface discount impact, profitability drivers, and segment-level revenue trends.">
+    <title>Case Study — Superstore Sales Analysis | Unochi Farah</title>
+    <meta name="description" content="Exploring 9,800 retail transactions to uncover what volume metrics hide — and why the smallest segment spends the most.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
 
     <style>
         :root { --cream:#F0F4F5; --red:#CB001D; --dark:#0E0E0E; }
         html { scroll-behavior: smooth; }
-        body { font-family:'Plus Jakarta Sans',sans-serif; background-color:var(--cream); color:var(--dark); overflow-x:hidden; }
+        body { font-family:'Plus Jakarta Sans',sans-serif; background-color:var(--cream); color:var(--dark); overflow-x:hidden; margin:0; }
         h1,h2,h3,h4,.serif { font-family:'DM Serif Display',serif; }
         code,.mono { font-family:'DM Mono',monospace; }
         .text-accent { color:var(--red); }
         #progress-bar { height:3px; background:var(--red); position:fixed; top:0; left:0; z-index:100; transition:width 0.1s; }
         .grid-bg { background-image:linear-gradient(rgba(14,14,14,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,14,14,0.055) 1px,transparent 1px); background-size:30px 30px; background-color:var(--cream); }
-        .nav-link { position:relative; transition:color 0.3s; font-weight:500; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; }
+        nav { position:fixed; width:100%; z-index:50; backdrop-filter:blur(12px); border-bottom:1px solid rgba(14,14,14,0.08); padding:20px 24px; box-sizing:border-box; background:rgba(240,244,245,0.92); }
+        .nav-inner { max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
+        .nav-logo { font-size:1rem; font-weight:600; letter-spacing:-0.02em; text-decoration:none; color:var(--dark); }
+        .nav-links { display:flex; gap:48px; align-items:center; }
+        .nav-link { position:relative; transition:color 0.3s; font-weight:500; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; text-decoration:none; color:var(--dark); }
         .nav-link:hover { color:var(--red); }
         .nav-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:-4px; left:0; background-color:var(--red); transition:width 0.3s ease; }
         .nav-link:hover::after { width:100%; }
@@ -35,31 +38,63 @@
         .thinking-card:hover { border-color:rgba(14,14,14,0.2); }
         .thinking-card:hover::after { transform:scaleX(1); }
         .thinking-num { font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--red); letter-spacing:0.15em; margin-bottom:0.75rem; }
-        .dashboard-frame { background:linear-gradient(135deg,#1a1a1a 0%,#111 100%); border:1px solid rgba(14,14,14,0.15); position:relative; overflow:hidden; }
-        .dashboard-frame::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(203,0,29,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(203,0,29,0.04) 1px,transparent 1px); background-size:24px 24px; }
-        .outcome-stat { position:relative; }
+        .outcome-stat { position:relative; padding-bottom:24px; }
         .outcome-stat::after { content:''; position:absolute; bottom:-1px; left:0; width:1.5rem; height:2px; background:var(--red); }
         .reflection-tag { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); border:1px solid rgba(203,0,29,0.25); padding:0.2rem 0.52rem; display:inline-block; margin-bottom:0.75rem; }
-        .btn-outline { border:1.5px solid var(--cream); padding:11px 26px; transition:0.35s; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; display:inline-block; color:var(--cream); }
+        .btn-outline { border:1.5px solid var(--cream); padding:11px 26px; transition:0.35s; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; display:inline-block; color:var(--cream); text-decoration:none; }
         .btn-outline:hover { background:var(--red); border-color:var(--red); color:var(--cream); transform:translateY(-2px); }
         hr.section-rule { border:none; border-top:1px solid rgba(14,14,14,0.08); margin:0; }
         @keyframes fadeSlideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-        .hero-animate   { animation:fadeSlideUp 0.9s ease forwards; }
+        .hero-animate { animation:fadeSlideUp 0.9s ease forwards; }
         .hero-animate-2 { animation:fadeSlideUp 0.9s 0.2s ease forwards; opacity:0; }
-        .social-link { position:relative; padding-bottom:3px; transition:color 0.3s; }
+        .social-link { position:relative; padding-bottom:3px; transition:color 0.3s; text-decoration:none; color:var(--cream); }
         .social-link::after { content:''; position:absolute; width:0; height:1.5px; bottom:0; left:0; background-color:var(--red); transition:width 0.3s ease; }
         .social-link:hover { color:var(--red); }
         .social-link:hover::after { width:100%; }
+
+        /* Layout helpers */
+        .max-w { max-width:1280px; margin:0 auto; }
+        .grid-12 { display:grid; grid-template-columns:repeat(12,1fr); gap:48px; }
+        .col-3 { grid-column:span 3; }
+        .col-7 { grid-column:span 7; }
+        .col-8 { grid-column:span 8; }
+        .col-9 { grid-column:span 9; }
+        .col-9-start4 { grid-column:4 / span 9; }
+        .col-12 { grid-column:span 12; }
+        section { padding:112px 24px; }
+        .section-dark { background:var(--dark); color:var(--cream); }
+
+        .tag { font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.07em; padding:4px 8px; background:rgba(14,14,14,0.055); color:rgba(14,14,14,0.45); display:inline-block; }
+        .tag-dark { background:rgba(240,244,245,0.08); color:rgba(240,244,245,0.4); }
+
+        .step-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(240,244,245,0.08); }
+        .step-cell { padding:32px; background:var(--dark); }
+
+        .findings-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; }
+        .outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:48px; }
+        .reflection-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+        .feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(14,14,14,0.09); border:1px solid rgba(14,14,14,0.09); }
+        .feature-cell { padding:32px; background:var(--cream); }
+
+        .chart-img { width:100%; height:auto; border:1px solid rgba(14,14,14,0.1); display:block; }
+
+        @media(max-width:768px) {
+            .grid-12 { grid-template-columns:1fr; gap:24px; }
+            .col-3,.col-7,.col-8,.col-9,.col-9-start4,.col-12 { grid-column:span 1; }
+            .step-grid { grid-template-columns:1fr; }
+            .findings-grid,.outcomes-grid,.reflection-grid,.feature-grid { grid-template-columns:1fr; }
+            .nav-links { gap:24px; }
+        }
     </style>
 </head>
 <body>
 <div id="progress-bar" style="width:0%"></div>
 
 <!-- NAV -->
-<nav class="fixed w-full z-50 backdrop-blur-md border-b px-6 py-5" style="background:rgba(240,244,245,0.92);border-color:rgba(14,14,14,0.08);">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <a href="index.html" class="text-lg uppercase tracking-tight" style="font-weight:600;letter-spacing:-0.02em;">Unochi Farah<span class="text-accent">.</span></a>
-        <div class="flex gap-8 md:gap-12 items-center">
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">Unochi Farah<span class="text-accent">.</span></a>
+        <div class="nav-links">
             <a href="index.html#work" class="nav-link">← All Work</a>
             <a href="index.html#contact" class="nav-link">Contact</a>
         </div>
@@ -67,34 +102,34 @@
 </nav>
 
 <!-- HERO -->
-<header class="flex items-end pb-20 pt-36 grid-bg px-6">
-    <div class="max-w-7xl mx-auto w-full">
+<header style="padding:144px 24px 80px; background-image:linear-gradient(rgba(14,14,14,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,14,14,0.055) 1px,transparent 1px); background-size:30px 30px; background-color:var(--cream);">
+    <div class="max-w">
         <div class="hero-animate">
-            <div class="flex items-center gap-4 mb-8">
-                <span class="mono text-[0.6rem] tracking-[0.3em] uppercase" style="color:rgba(14,14,14,0.3);">Case Study</span>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+                <span class="mono" style="font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(14,14,14,0.3);">Case Study</span>
                 <span style="width:2rem;height:1px;background:var(--red);display:inline-block;"></span>
-                <span class="mono text-[0.6rem] tracking-[0.3em] uppercase" style="color:rgba(14,14,14,0.3);">01</span>
+                <span class="mono" style="font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(14,14,14,0.3);">Superstore</span>
             </div>
-            <h1 class="text-3xl md:text-4xl lg:text-5xl leading-[1.15] mb-10" style="font-weight:400;max-width:22ch;">
-                AWS SaaS <span class="text-accent italic">Sales</span> Analysis
+            <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin:0 0 40px;max-width:22ch;">
+                Superstore <span class="text-accent" style="font-style:italic;">Sales</span> Analysis
             </h1>
         </div>
-        <div class="hero-animate-2 grid md:grid-cols-4 gap-8 mt-12 pt-10" style="border-top:1px solid rgba(14,14,14,0.09);">
+        <div class="hero-animate-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:48px;padding-top:40px;border-top:1px solid rgba(14,14,14,0.09);">
             <div class="stat-block">
-                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Tools</span>
-                <span class="font-medium text-sm">Excel · Tableau Public</span>
+                <span style="display:block;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,14,14,0.35);margin-bottom:8px;">Tools</span>
+                <span style="font-weight:500;font-size:0.875rem;">Excel · Pivot Tables</span>
             </div>
             <div class="stat-block">
-                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Dataset</span>
-                <span class="font-medium text-sm">9,993 Transactions</span>
+                <span style="display:block;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,14,14,0.35);margin-bottom:8px;">Dataset</span>
+                <span style="font-weight:500;font-size:0.875rem;">9,800 Transactions</span>
             </div>
             <div class="stat-block">
-                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Coverage</span>
-                <span class="font-medium text-sm">48 Countries · 3 Regions</span>
+                <span style="display:block;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,14,14,0.35);margin-bottom:8px;">Coverage</span>
+                <span style="font-weight:500;font-size:0.875rem;">USA · 3 Segments</span>
             </div>
             <div class="stat-block">
-                <span class="block mono text-[0.58rem] tracking-widest uppercase mb-2" style="color:rgba(14,14,14,0.35);">Period</span>
-                <span class="font-medium text-sm">2020 – 2023</span>
+                <span style="display:block;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,14,14,0.35);margin-bottom:8px;">Fields</span>
+                <span style="font-weight:500;font-size:0.875rem;">18 Columns</span>
             </div>
         </div>
     </div>
@@ -104,41 +139,41 @@
 
 <article>
 
-    <!-- CONTEXT + PROBLEM -->
-    <section class="py-28 px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
-            <div class="md:col-span-3" data-aos="fade-right">
+    <!-- CONTEXT -->
+    <section>
+        <div class="max-w grid-12">
+            <div class="col-3">
                 <span class="section-label">01 — Context</span>
             </div>
-            <div class="md:col-span-9 md:col-start-4 grid md:grid-cols-2 gap-16" data-aos="fade-up">
+            <div class="col-9-start4" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;">
                 <div>
-                    <h2 class="text-3xl md:text-4xl mb-6 leading-tight" style="font-weight:400;">Revenue Was Growing. Profit Wasn't.</h2>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.58);">
-                        A global AWS SaaS company was generating $2.3M in B2B transactions across 48 countries — but aggregate revenue was masking a structural problem. 18.7% of all orders were loss-making, and entire region-segment combinations were operating at negative margins without anyone noticing.
+                    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;line-height:1.3;margin:0 0 24px;">Volume Metrics Can Lie.</h2>
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0 0 16px;">
+                        A retail superstore with 9,800 transactions and 18 columns — on the surface, the Consumer segment dominates everything. Most orders, most revenue, most visibility. It's easy to assume Consumer is the most valuable segment and optimize for it.
                     </p>
-                    <p class="text-sm font-light leading-relaxed mt-4" style="color:rgba(14,14,14,0.58);">
-                        The business had no systematic view of where margin was being destroyed — and no framework to understand how discount rates were driving those losses. This project was built to answer that.
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0;">
+                        This project started from a simple set of questions and followed the data wherever it led — including to a finding that flipped the obvious assumption on its head.
                     </p>
-                    <div class="mt-8 space-y-3">
-                        <p class="text-xs font-medium" style="color:rgba(14,14,14,0.4);">Business questions answered:</p>
-                        <ul class="space-y-2">
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> Which region generates the most revenue vs. the most profit?</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> Is there a discount level where profitability consistently collapses?</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> Which customer segment contributes the most revenue vs. profit?</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(14,14,14,0.55);"><span style="color:var(--red);">—</span> Which product and region combos should the sales team prioritize?</li>
+                    <div style="margin-top:32px;">
+                        <p style="font-size:0.75rem;font-weight:500;color:rgba(14,14,14,0.4);margin:0 0 12px;">Questions explored:</p>
+                        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which state has the highest and lowest sales?</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which item is ordered the most?</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which item generates the highest revenue?</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which segment orders the most — and which spends the most per order?</li>
                         </ul>
                     </div>
                 </div>
-                <div class="space-y-6">
+                <div style="display:flex;flex-direction:column;gap:24px;">
                     <div class="thinking-card">
                         <div class="thinking-num">Key Finding</div>
-                        <p class="serif italic text-xl mb-2">18.7% Loss Rate</p>
-                        <p class="text-xs font-light" style="color:rgba(14,14,14,0.5);">1,871 loss-making orders out of 9,993 — plus 65 break-even orders. Total unprofitable transactions: 1,936 (19.4% of all orders).</p>
+                        <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 8px;">Home Office Wins Per Order</p>
+                        <p style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.5);margin:0;">Despite having the fewest orders of all three segments, Home Office customers have the highest average spend per order — more than Consumer and Corporate.</p>
                     </div>
                     <div class="thinking-card">
-                        <div class="thinking-num">Root Cause</div>
-                        <p class="serif italic text-xl mb-2">Discount Abuse</p>
-                        <p class="text-xs font-light" style="color:rgba(14,14,14,0.5);">Orders with 65%+ discounts result in –50% profit margin. Even a 20% discount drops margin from 30% to 9%. No guardrails existed.</p>
+                        <div class="thinking-num">Counter-Intuition</div>
+                        <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 8px;">Volume ≠ Value</p>
+                        <p style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.5);margin:0;">The most ordered item (Staple Envelope, 47 orders) generated $1,675 in total sales. The highest revenue item (Canon imageCLASS Copier) generated $61,599 from just 5 orders.</p>
                     </div>
                 </div>
             </div>
@@ -147,42 +182,42 @@
 
     <hr class="section-rule">
 
-    <!-- WAY OF THINKING -->
-    <section class="py-28 px-6" style="background:var(--dark);color:var(--cream);">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-12 gap-12 mb-16">
-                <div class="md:col-span-3" data-aos="fade-right">
+    <!-- APPROACH -->
+    <section class="section-dark">
+        <div class="max-w">
+            <div class="grid-12" style="margin-bottom:64px;">
+                <div class="col-3">
                     <span class="section-label" style="color:rgba(240,244,245,0.25);">02 — Approach</span>
                 </div>
-                <div class="md:col-span-7" data-aos="fade-up">
-                    <h2 class="text-4xl md:text-5xl leading-tight" style="font-weight:400;">
-                        How I Framed <span class="text-accent italic">the Analysis</span>
+                <div class="col-7">
+                    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.75rem,4vw,3rem);font-weight:400;line-height:1.2;margin:0 0 16px;">
+                        Start With a Question. <span class="text-accent" style="font-style:italic;">Follow the Answer.</span>
                     </h2>
-                    <p class="text-sm font-light mt-4 leading-relaxed" style="color:rgba(240,244,245,0.45);">
-                        Two parallel workstreams — one in Excel for cleaning and pivot analysis, one in Tableau for visual storytelling — designed to answer the same questions from different angles.
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(240,244,245,0.45);margin:0;">
+                        Rather than building a comprehensive dashboard upfront, I started with 3 questions and let each finding generate the next one — a more honest reflection of how real analysis actually works.
                     </p>
                 </div>
             </div>
-            <div class="grid md:grid-cols-4 gap-[1px]" style="background:rgba(240,244,245,0.08);" data-aos="fade-up">
-                <div class="p-8" style="background:var(--dark);">
-                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Step 01</span>
-                    <h4 class="serif italic text-xl mb-3">Clean the Foundation</h4>
-                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Power Query pipeline to resolve locale-based decimal formatting issues (Indonesian system locale misreading separators), type casting, and feature engineering before any analysis began.</p>
+            <div class="step-grid">
+                <div class="step-cell">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 01</span>
+                    <h4 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 12px;">Identify the Columns</h4>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">Before touching any formula, I mapped each question to the columns it needed. A small step that prevents a common mistake — using Order ID as a proxy for sales when the Sales column exists.</p>
                 </div>
-                <div class="p-8" style="background:var(--dark);">
-                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Step 02</span>
-                    <h4 class="serif italic text-xl mb-3">Engineer the Metrics</h4>
-                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">Created calculated columns that didn't exist in the raw data: Profit Margin %, Discount Band (None/Low/Medium/High), Profit Flag, and Revenue Tier — the backbone of every downstream analysis.</p>
+                <div class="step-cell">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 02</span>
+                    <h4 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 12px;">Build the Pivot Tables</h4>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">One pivot per question. State × Sales. Product × Quantity. Product × Revenue. Segment × Orders + Sales. Each sorted to surface the answer immediately without scanning rows.</p>
                 </div>
-                <div class="p-8" style="background:var(--dark);">
-                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Step 03</span>
-                    <h4 class="serif italic text-xl mb-3">Decompose by Dimension</h4>
-                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">5 pivot tables segmented by Region × Year, Product, Segment, Discount Impact, and Industry — each designed to answer one specific business question rather than act as a general summary.</p>
+                <div class="step-cell">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 03</span>
+                    <h4 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 12px;">Follow the Curiosity</h4>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">California kept appearing as the top state. The segment with the fewest orders turned out to spend the most per order. Every finding raised a new question — and I followed each one.</p>
                 </div>
-                <div class="p-8" style="background:var(--dark);">
-                    <span class="mono text-[0.58rem] tracking-[0.2em] uppercase mb-4 block" style="color:var(--red);">Step 04</span>
-                    <h4 class="serif italic text-xl mb-3">Tell the Story Visually</h4>
-                    <p class="text-xs font-light leading-relaxed" style="color:rgba(240,244,245,0.4);">A 5-part Tableau Story built with a narrative arc — from macro overview down to specific product and geographic recommendations — with captions designed for a non-technical audience.</p>
+                <div class="step-cell">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 04</span>
+                    <h4 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 12px;">Drill Into Home Office</h4>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">Once Home Office stood out, I broke it down further — by state, by product, and by shipping preference — to understand not just that it was valuable, but where and how to act on it.</p>
                 </div>
             </div>
         </div>
@@ -191,64 +226,63 @@
     <hr class="section-rule">
 
     <!-- PROCESS -->
-    <section class="py-28 px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
-            <div class="md:col-span-3" data-aos="fade-right">
+    <section>
+        <div class="max-w grid-12">
+            <div class="col-3">
                 <span class="section-label">03 — Process</span>
             </div>
-            <div class="md:col-span-8 space-y-12" data-aos="fade-up">
+            <div class="col-8" style="display:flex;flex-direction:column;gap:48px;">
 
-                <div class="process-step pb-12">
-                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">01 / Data Cleaning & Feature Engineering</span>
-                    <h4 class="text-xl font-semibold mb-3">Building a trusted foundation in Power Query</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
-                        Ingested 9,993 raw transaction records. Identified and resolved a locale-based decimal formatting issue — the Indonesian system locale was reading <code>.</code> as a thousand separator, corrupting numeric fields on import. Applied M transformations for conditional columns, custom columns, and locale-based type casting before any analysis began.
+                <div class="process-step" style="padding-bottom:48px;">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:12px;">01 / State Sales Analysis</span>
+                    <h4 style="font-size:1.125rem;font-weight:600;margin:0 0 12px;">California vs the rest of the country</h4>
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0 0 16px;">
+                        Pivot table: State × Sum of Sales, sorted descending. California came in at $446,306 — North Dakota at $919. A 485x difference. The Corporate segment alone in California ($144,731) outpaced North Dakota's entire sales figure, confirming that business presence, not just population, drives the gap.
                     </p>
-                    <div class="flex gap-2 mt-4 flex-wrap">
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Power Query</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">M Transformations</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Type Casting</span>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <span class="tag">State</span>
+                        <span class="tag">Sales</span>
+                        <span class="tag">Segment Drill-Down</span>
                     </div>
                 </div>
 
-                <div class="process-step pb-12">
-                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">02 / Excel Pivot Analysis & KPI Dashboard</span>
-                    <h4 class="text-xl font-semibold mb-3">5 pivot tables, one interactive dashboard</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
-                        Built five pivot tables covering: Revenue by Region & Year, Product Performance, Segment Analysis, Discount Impact, and Industry Breakdown. Each pivot fed into a slicer-connected KPI dashboard with Region and Segment filters. KPI boxes used named cell references to stay live as slicers changed. Custom number formatting (<code>$#,##0.0,"M"</code>) and sheet protection were applied for a clean, shareable output.
+                <div class="process-step" style="padding-bottom:48px;">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:12px;">02 / Product Analysis — Two Ways</span>
+                    <h4 style="font-size:1.125rem;font-weight:600;margin:0 0 12px;">Same question, two completely different answers</h4>
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0 0 16px;">
+                        "Which item is the highest selling?" turned out to be two separate questions. By quantity: Staple Envelope with 47 orders and $1,675 in total sales. By revenue: Canon imageCLASS 2200 Advanced Copier at $61,599 from just 5 orders. Recognizing that ambiguity early shaped how I framed every subsequent question.
                     </p>
-                    <div class="flex gap-2 mt-4 flex-wrap">
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Pivot Tables</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Slicers</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Named References</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Excel</span>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <span class="tag">Product Name</span>
+                        <span class="tag">Quantity</span>
+                        <span class="tag">Revenue</span>
                     </div>
                 </div>
 
-                <div class="process-step pb-12">
-                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">03 / Tableau Story — 5-Part Visual Narrative</span>
-                    <h4 class="text-xl font-semibold mb-3">From macro overview to specific recommendation</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
-                        Assembled 5 visualizations into a Tableau Story with narrative captions. Charts used: filled world map (geographic margin view), product bar chart, discount vs. profit scatter plot, stacked area chart (segment trends over time), and industry heatmap. Calculated fields — Profit Margin %, Discount Band, Profit Flag, Revenue Tier — were rebuilt in Tableau using IF/ELSEIF logic to mirror the Excel model.
+                <div class="process-step" style="padding-bottom:48px;">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:12px;">03 / Segment Analysis</span>
+                    <h4 style="font-size:1.125rem;font-weight:600;margin:0 0 12px;">The smallest segment spends the most</h4>
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0 0 16px;">
+                        Consumer: 5,101 orders, $1,148,060 total. Home Office: 1,746 orders, $424,982 total. On totals alone, Consumer wins by a wide margin. But dividing sales by orders revealed a different story — Home Office averages $243 per order vs Consumer's $225. The segment with the least volume has the highest value per transaction.
                     </p>
-                    <div class="flex gap-2 mt-4 flex-wrap">
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Tableau Public</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Calculated Fields</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Scatter / Heatmap</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Filled Maps</span>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <span class="tag">Segment</span>
+                        <span class="tag">Order Count</span>
+                        <span class="tag">Avg Order Value</span>
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <span class="mono text-[0.62rem] text-accent tracking-[0.15em] block mb-3">04 / Recommendation Synthesis</span>
-                    <h4 class="text-xl font-semibold mb-3">Turning findings into an actionable policy</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
-                        The analysis concluded with two concrete recommendations: cap discounts at 30% company-wide to prevent margin collapse, and investigate the SMB pricing strategy in APJ specifically — where the segment runs at –2.5% overall margin despite being the company's highest-revenue segment globally.
+                    <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:12px;">04 / Home Office Drill-Down</span>
+                    <h4 style="font-size:1.125rem;font-weight:600;margin:0 0 12px;">Where, what, and how they buy</h4>
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0 0 16px;">
+                        Filtered to Home Office customers only and broke down by three dimensions: state (California leads with 325 orders), shipping preference (Standard Class dominates at 1,046 orders vs Same Day's 112), and most ordered product (Easy-staple Paper at 12 orders). Together these paint a clear operational picture of the segment.
                     </p>
-                    <div class="flex gap-2 mt-4 flex-wrap">
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Discount Policy</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Segment Strategy</span>
-                        <span class="mono text-[0.55rem] tracking-[0.07em] px-2 py-1" style="background:rgba(14,14,14,0.055);color:rgba(14,14,14,0.45);">Geographic Prioritization</span>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <span class="tag">Filter</span>
+                        <span class="tag">Ship Mode</span>
+                        <span class="tag">Geographic</span>
+                        <span class="tag">Product</span>
                     </div>
                 </div>
 
@@ -258,81 +292,40 @@
 
     <hr class="section-rule">
 
-    <!-- DASHBOARD -->
-    <section class="py-28 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-12 gap-12 mb-16">
-                <div class="md:col-span-3" data-aos="fade-right">
+    <!-- CHARTS / DELIVERABLES -->
+    <section>
+        <div class="max-w">
+            <div class="grid-12" style="margin-bottom:64px;">
+                <div class="col-3">
                     <span class="section-label">04 — Deliverables</span>
                 </div>
-                <div class="md:col-span-7" data-aos="fade-up">
-                    <h2 class="text-3xl md:text-4xl mb-4" style="font-weight:400;">Excel Dashboard + Tableau Story</h2>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">
-                        Two complementary outputs: an Excel KPI dashboard for detailed filtering and pivot exploration, and a Tableau Public story for visual narrative and stakeholder presentation.
-                    </p>
+                <div class="col-7">
+                    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;margin:0 0 16px;">Four Charts. Four Questions Answered.</h2>
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.55);margin:0;">Each chart was built to answer one specific question — not to fill a dashboard. The combo chart for segment analysis carries the most analytical weight, showing both order volume and revenue on one view.</p>
                 </div>
             </div>
 
-            <!-- Excel Dashboard frame -->
-            <div class="mb-3" data-aos="fade-up">
-                <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-3" style="color:rgba(14,14,14,0.3);">Excel KPI Dashboard</span>
-            </div>
-            <div class="mb-10" data-aos="fade-up">
-                <img src="https://raw.githubusercontent.com/unochifarah/AWS-SaaS-Sales-Analysis/main/excel/AWS-DASHBOARD.jpg" alt="Excel KPI Dashboard" class="w-full h-auto" style="border:1px solid rgba(14,14,14,0.1);">
+            <!-- Placeholder for charts - user will add their own screenshot -->
+            <div style="background:rgba(14,14,14,0.03);border:1px dashed rgba(14,14,14,0.15);padding:48px;text-align:center;margin-bottom:32px;">
+                <p style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,14,14,0.3);margin:0 0 8px;">Dashboard Preview</p>
+                <p style="font-size:0.875rem;font-weight:300;color:rgba(14,14,14,0.4);margin:0;">Add your charts screenshot here — replace this placeholder with an &lt;img&gt; tag pointing to your image file</p>
             </div>
 
-            <!-- Tableau frame -->
-            <div class="mb-3" data-aos="fade-up">
-                <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-3" style="color:rgba(14,14,14,0.3);">Tableau Public Story</span>
-            </div>
-            <div class="mb-6" data-aos="fade-up" style="overflow:hidden; border:1px solid rgba(14,14,14,0.1);">
-                <div class="tableauPlaceholder" id="viz1772837372408" style="position:relative; width:100%;">
-                    <noscript>
-                        <a href="#"><img alt="SaaS Sales Dashboard 2020–2023" src="https://public.tableau.com/static/images/Sa/SaaSSalesDashboard20202023/SaaSSalesDashboard20202023/1_rss.png" style="border:none" /></a>
-                    </noscript>
-                    <object class="tableauViz" style="display:none;">
-                        <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
-                        <param name="embed_code_version" value="3" />
-                        <param name="site_root" value="" />
-                        <param name="name" value="SaaSSalesDashboard20202023/SaaSSalesDashboard20202023" />
-                        <param name="tabs" value="no" />
-                        <param name="toolbar" value="yes" />
-                        <param name="static_image" value="https://public.tableau.com/static/images/Sa/SaaSSalesDashboard20202023/SaaSSalesDashboard20202023/1.png" />
-                        <param name="animate_transition" value="yes" />
-                        <param name="display_static_image" value="yes" />
-                        <param name="display_spinner" value="yes" />
-                        <param name="display_overlay" value="yes" />
-                        <param name="display_count" value="yes" />
-                        <param name="language" value="en-US" />
-                    </object>
+            <div class="feature-grid">
+                <div class="feature-cell">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:12px;">Chart 01</span>
+                    <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 8px;">Lowest & Highest Sales by State</h4>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">Grouped bar by segment, showing California's dominance across all three and North Dakota's near-zero presence in Corporate and Home Office.</p>
                 </div>
-                <script type="text/javascript">
-                    var divElement = document.getElementById('viz1772837372408');
-                    var vizElement = divElement.getElementsByTagName('object')[0];
-                    vizElement.style.width = '100%';
-                    vizElement.style.height = Math.round(divElement.offsetWidth * (991 / 1016)) + 'px';
-                    var scriptElement = document.createElement('script');
-                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-                    vizElement.parentNode.insertBefore(scriptElement, vizElement);
-                </script>
-            </div>
-
-            <!-- Dashboard features -->
-            <div class="grid md:grid-cols-3 gap-[1px]" style="background:rgba(14,14,14,0.09);border:1px solid rgba(14,14,14,0.09);" data-aos="fade-up">
-                <div class="p-8" style="background:var(--cream);">
-                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Excel</span>
-                    <h4 class="font-semibold text-sm mb-2">Interactive KPI Dashboard</h4>
-                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Slicer-connected KPI boxes for Region and Segment. Live metrics update as filters change, powered by named cell references across 5 pivot tables.</p>
+                <div class="feature-cell">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:12px;">Chart 02</span>
+                    <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 8px;">Top Items by Order Count</h4>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">Horizontal bar of the top 6 most ordered products. Staples and staple-adjacent products dominate volume — none of them appear in the revenue chart.</p>
                 </div>
-                <div class="p-8" style="background:var(--cream);">
-                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Tableau</span>
-                    <h4 class="font-semibold text-sm mb-2">5-Part Visual Story</h4>
-                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">World map, product bar chart, discount scatter, stacked area chart, and industry heatmap — assembled with narrative captions into a linear story arc.</p>
-                </div>
-                <div class="p-8" style="background:var(--cream);">
-                    <span class="mono text-[0.58rem] tracking-[0.15em] uppercase text-accent block mb-3">Both</span>
-                    <h4 class="font-semibold text-sm mb-2">Shared Calculated Metrics</h4>
-                    <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">Profit Margin %, Discount Band, Profit Flag, and Revenue Tier were engineered in both tools — ensuring consistent definitions across every view.</p>
+                <div class="feature-cell">
+                    <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:12px;">Chart 03 + 04</span>
+                    <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 8px;">Revenue Leaders & Segment Combo</h4>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">Canon Copier stands alone in the revenue chart. The combo chart overlays order count (bar) and total sales (line) per segment — making the Home Office insight immediately visible.</p>
                 </div>
             </div>
         </div>
@@ -341,34 +334,33 @@
     <hr class="section-rule">
 
     <!-- KEY FINDINGS -->
-    <section class="py-28 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-12 gap-12 mb-16">
-                <div class="md:col-span-3" data-aos="fade-right">
+    <section>
+        <div class="max-w">
+            <div class="grid-12" style="margin-bottom:64px;">
+                <div class="col-3">
                     <span class="section-label">05 — Key Findings</span>
                 </div>
             </div>
-            <div class="insight-block p-12 md:p-20" data-aos="fade-up">
-                <div class="grid md:grid-cols-2 gap-16">
+            <div class="insight-block" style="padding:80px;">
+                <div class="findings-grid">
                     <div>
-                        <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-6" style="color:var(--red);">Revenue vs. Profitability</span>
-                        <h3 class="serif italic text-2xl mb-5 leading-tight">EMEA leads in revenue — but AMER has the best margin.</h3>
-                        <ul class="space-y-3">
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Overall profit margin is 12.5%, within normal SaaS range</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>SMB drives 50% of revenue, but APJ SMB runs at –2.5% margin</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Q4 (Sep–Dec) spikes consistently across all segments; Apr–Aug is stagnant</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Russia: large market, –0.2% margin vs Austria at 30%</li>
+                        <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:24px;">Geography</span>
+                        <h3 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.5rem;margin:0 0 20px;line-height:1.3;">California shows up everywhere.</h3>
+                        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;">
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Highest total sales at $446,306 — 485x more than North Dakota's $919</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Corporate segment in California alone ($144,731) exceeds North Dakota's full sales</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Top state for Home Office customers specifically, with 325 orders</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Business density, not just population, explains the gap</li>
                         </ul>
                     </div>
                     <div>
-                        <span class="mono text-[0.58rem] tracking-[0.2em] uppercase block mb-6" style="color:var(--red);">Discount Impact</span>
-                        <h3 class="serif italic text-2xl mb-5 leading-tight">Above 40% discount — losses are almost guaranteed.</h3>
-                        <ul class="space-y-3">
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>65%+ discounts → –50% profit margin</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>20% discount already drops margin from 30% to 9%</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Best combo: Miscellaneous in EMEA at 30% margin</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Worst combo: Tech in APJ at –11.4% margin</li>
-                            <li class="text-xs font-light flex gap-2" style="color:rgba(240,244,245,0.5);"><span style="color:var(--red);flex-shrink:0;">—</span>Top product by revenue: ContactMatcher — but not all top-5 are profitable</li>
+                        <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:24px;">Segments & Products</span>
+                        <h3 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.5rem;margin:0 0 20px;line-height:1.3;">The obvious metric isn't always the right one.</h3>
+                        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;">
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Consumer has 5,101 orders vs Home Office's 1,746 — but Home Office averages $243/order vs $225</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Staple Envelope: 47 orders, $1,675 total. Canon Copier: 5 orders, $61,599 total</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Home Office prefers Standard Class shipping (1,046 orders vs 112 Same Day)</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Most ordered Home Office product: Easy-staple Paper — a recurring consumable, not a one-time purchase</li>
                         </ul>
                     </div>
                 </div>
@@ -379,24 +371,24 @@
     <hr class="section-rule">
 
     <!-- OUTCOMES -->
-    <section class="py-28 px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
-            <div class="md:col-span-3" data-aos="fade-right">
+    <section>
+        <div class="max-w grid-12">
+            <div class="col-3">
                 <span class="section-label">06 — Outcomes</span>
             </div>
-            <div class="md:col-span-9" data-aos="fade-up">
-                <div class="grid md:grid-cols-3 gap-12 mb-16">
-                    <div class="outcome-stat pb-6">
-                        <span class="serif italic text-5xl block mb-3">$2.3M</span>
-                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">in B2B SaaS revenue analyzed across 48 countries and 4 years, with full margin visibility at the transaction level.</p>
+            <div class="col-9">
+                <div class="outcomes-grid" style="margin-bottom:64px;">
+                    <div class="outcome-stat">
+                        <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:3rem;display:block;margin-bottom:12px;">$243</span>
+                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">average order value for the Home Office segment — the highest of all three, despite being the smallest by order volume.</p>
                     </div>
-                    <div class="outcome-stat pb-6">
-                        <span class="serif italic text-5xl block mb-3">19.4%</span>
-                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">of all orders identified as unprofitable — a finding invisible in top-line reporting. Broken down by segment, region, and discount band.</p>
+                    <div class="outcome-stat">
+                        <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:3rem;display:block;margin-bottom:12px;">37×</span>
+                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">more revenue from one Canon Copier sale than one Staple Envelope order — the clearest illustration of why order count and revenue need to be tracked separately.</p>
                     </div>
-                    <div class="outcome-stat pb-6">
-                        <span class="serif italic text-5xl block mb-3">30%</span>
-                        <p class="text-xs font-light leading-relaxed" style="color:rgba(14,14,14,0.5);">recommended discount cap — a data-backed policy threshold derived from the scatter analysis of discount rate vs. profit margin across all orders.</p>
+                    <div class="outcome-stat">
+                        <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:3rem;display:block;margin-bottom:12px;">CA</span>
+                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">the single state that appears at the top across total sales, segment breakdowns, and Home Office drill-downs — a consistent signal worth acting on.</p>
                     </div>
                 </div>
             </div>
@@ -405,32 +397,54 @@
 
     <hr class="section-rule">
 
-    <!-- REFLECTION -->
-    <section class="py-28 px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
-            <div class="md:col-span-3" data-aos="fade-right">
-                <span class="section-label">07 — Reflection</span>
+    <!-- CONCLUSION -->
+    <section>
+        <div class="max-w grid-12">
+            <div class="col-3">
+                <span class="section-label">07 — Conclusion</span>
             </div>
-            <div class="md:col-span-9 grid md:grid-cols-2 gap-10" data-aos="fade-up">
-                <div class="thinking-card">
-                    <div class="reflection-tag">Lesson 01</div>
-                    <h4 class="font-semibold text-base mb-3">Aggregates hide the problem</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">The 12.5% overall margin looked healthy until I broke it down by region and segment. APJ SMB at –2.5% only becomes visible when you stop looking at totals and start looking at intersections.</p>
-                </div>
-                <div class="thinking-card">
-                    <div class="reflection-tag">Lesson 02</div>
-                    <h4 class="font-semibold text-base mb-3">Data quality is the first deliverable</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">The locale-based decimal issue would have gone unnoticed and silently corrupted every downstream calculation. Fixing it before analysis was the most important step in the whole project.</p>
-                </div>
-                <div class="thinking-card">
-                    <div class="reflection-tag">Lesson 03</div>
-                    <h4 class="font-semibold text-base mb-3">Two tools, one story</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">Excel and Tableau each answered the same questions differently — one for exploration and filtering, one for narrative. Keeping calculated metrics consistent between them was critical to maintaining a single source of truth.</p>
-                </div>
-                <div class="thinking-card">
-                    <div class="reflection-tag">Lesson 04</div>
-                    <h4 class="font-semibold text-base mb-3">Findings only matter with a recommendation</h4>
-                    <p class="text-sm font-light leading-relaxed" style="color:rgba(14,14,14,0.55);">Knowing Tech in APJ has a –11.4% margin is an observation. Recommending a 30% discount cap and an SMB pricing audit in APJ is actionable. The analysis was only complete once it concluded with something the business could act on.</p>
+            <div class="col-8">
+                <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;margin:0 0 24px;">What the Store Should Do With This</h2>
+                <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0 0 16px;">
+                    Although the Consumer segment dominates in order volume and total revenue, the Home Office segment is worth closer attention — its customers spend more per order on average. The store could benefit from focusing retention and marketing efforts on Home Office customers, particularly in California.
+                </p>
+                <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0;">
+                    Standard Class shipping is the clear preference for Home Office — ensuring it remains reliable and well-stocked is a low-effort way to protect the segment's satisfaction. And given that California consistently leads across every dimension of this analysis, any geographic campaign should start there.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- REFLECTION -->
+    <section>
+        <div class="max-w grid-12">
+            <div class="col-3">
+                <span class="section-label">08 — Reflection</span>
+            </div>
+            <div class="col-9">
+                <div class="reflection-grid">
+                    <div class="thinking-card">
+                        <div class="reflection-tag">Lesson 01</div>
+                        <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 12px;">Define the question before touching the data</h4>
+                        <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0;">"Highest selling" sounds like one question. It's two. Catching that ambiguity before building the pivot table saved time and produced more honest findings.</p>
+                    </div>
+                    <div class="thinking-card">
+                        <div class="reflection-tag">Lesson 02</div>
+                        <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 12px;">Totals hide what averages reveal</h4>
+                        <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0;">Consumer's total revenue looks dominant until you divide by order count. The Home Office insight only appears when you ask a different version of the same question.</p>
+                    </div>
+                    <div class="thinking-card">
+                        <div class="reflection-tag">Lesson 03</div>
+                        <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 12px;">One finding should generate the next</h4>
+                        <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0;">California appearing in the state analysis prompted the Home Office drill-down. That drill-down prompted the shipping preference question. The best analysis is a chain, not a checklist.</p>
+                    </div>
+                    <div class="thinking-card">
+                        <div class="reflection-tag">Lesson 04</div>
+                        <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 12px;">Simple tools are enough to find real insight</h4>
+                        <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0;">This entire analysis used pivot tables and basic arithmetic. The insight wasn't hidden in a complex model — it was in asking the right question and looking at the answer from a different angle.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -438,32 +452,38 @@
 
 </article>
 
-<!-- NEXT PROJECT CTA -->
-<section class="py-20 px-6" style="background:var(--dark);color:var(--cream);">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+<!-- FOOTER CTA -->
+<section style="padding:80px 24px;background:var(--dark);color:var(--cream);">
+    <div class="max-w" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:40px;">
         <div>
-            <span class="mono text-[0.6rem] tracking-[0.3em] uppercase block mb-3" style="color:rgba(240,244,245,0.25);">Next Case Study</span>
-            <h3 class="serif italic text-3xl md:text-4xl">E-Commerce Customer Behavior Analysis →</h3>
-            <p class="text-sm font-light mt-3" style="color:rgba(240,244,245,0.35);">RFM segmentation + churn prediction · PostgreSQL · Power BI</p>
+            <span style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(240,244,245,0.25);display:block;margin-bottom:12px;">Back to Work</span>
+            <h3 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.5rem,3vw,2.5rem);margin:0;">See All Projects →</h3>
+            <p style="font-size:0.875rem;font-weight:300;margin:12px 0 0;color:rgba(240,244,245,0.35);">Excel · PostgreSQL · Tableau · Power BI</p>
         </div>
-        <div class="flex gap-6">
+        <div style="display:flex;gap:24px;">
             <a href="index.html#work" class="btn-outline" style="border-color:rgba(240,244,245,0.25);color:rgba(240,244,245,0.6);">All Work</a>
-            <a href="project-two.html" class="btn-outline">View Case Study</a>
+            <a href="index.html#contact" class="btn-outline">Contact</a>
         </div>
     </div>
 </section>
 
-
 <!-- FOOTER -->
-<footer class="pt-20 pb-10 px-6" style="background:var(--dark);color:var(--cream);border-top:1px solid rgba(240,244,245,0.07);">
-    <div class="max-w-7xl mx-auto flex justify-between items-center text-[10px] uppercase tracking-[0.3em] font-medium" style="color:rgba(240,244,245,0.28);">
-        <div class="flex items-center gap-3">
-            <span class="h-2 w-2 rounded-full animate-pulse" style="background:var(--red);"></span>
-            <span>Open to Opportunities</span>
+<footer style="padding:40px 24px 40px;background:var(--dark);color:var(--cream);border-top:1px solid rgba(240,244,245,0.07);">
+    <div class="max-w" style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span style="height:8px;width:8px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse 2s infinite;"></span>
+            <span style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(240,244,245,0.28);">Open to Opportunities</span>
         </div>
-        <p>&copy; Unochi Farah</p>
+        <p style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(240,244,245,0.28);margin:0;">&copy; Unochi Farah</p>
     </div>
 </footer>
+
+<style>
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+</style>
 
 <script>
     window.addEventListener('scroll', function() {
@@ -471,13 +491,23 @@
         let h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         document.getElementById("progress-bar").style.width = (s / h * 100) + "%";
     });
+
     document.addEventListener('DOMContentLoaded', function() {
         const observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
-                if (entry.isIntersecting) entry.target.classList.add('aos-animate');
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('[data-aos]').forEach(function(el) { observer.observe(el); });
+
+        document.querySelectorAll('section > .max-w').forEach(function(el) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+            observer.observe(el);
+        });
     });
 </script>
 </body>
