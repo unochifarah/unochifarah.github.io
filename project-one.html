@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Case Study — Superstore Sales Analysis | Unochi Farah</title>
-    <meta name="description" content="Exploring 9,800 retail transactions to uncover what volume metrics hide — and why the smallest segment spends the most.">
+    <meta name="description" content="Exploring 9,800 retail transactions to uncover what volume metrics hide and why the smallest segment spends the most.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -140,47 +140,113 @@
 <article>
 
     <!-- CONTEXT -->
-    <section>
-        <div class="max-w grid-12">
-            <div class="col-3">
-                <span class="section-label">01 — Context</span>
-            </div>
-            <div class="col-9-start4" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;">
-                <div>
-                    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;line-height:1.3;margin:0 0 24px;">Volume Metrics Can Lie.</h2>
-                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0 0 16px;">
-                        A retail superstore with 9,800 transactions and 18 columns — on the surface, the Consumer segment dominates everything. Most orders, most revenue, most visibility. It's easy to assume Consumer is the most valuable segment and optimize for it.
-                    </p>
-                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0;">
-                        This project started from a simple set of questions and followed the data wherever it led — including to a finding that flipped the obvious assumption on its head.
-                    </p>
-                    <div style="margin-top:32px;">
-                        <p style="font-size:0.75rem;font-weight:500;color:rgba(14,14,14,0.4);margin:0 0 12px;">Questions explored:</p>
-                        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which state has the highest and lowest sales?</li>
-                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which item is ordered the most?</li>
-                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which item generates the highest revenue?</li>
-                            <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;"><span style="color:var(--red);">—</span> Which segment orders the most — and which spends the most per order?</li>
-                        </ul>
-                    </div>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:24px;">
-                    <div class="thinking-card">
-                        <div class="thinking-num">Key Finding</div>
-                        <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 8px;">Home Office Wins Per Order</p>
-                        <p style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.5);margin:0;">Despite having the fewest orders of all three segments, Home Office customers have the highest average spend per order — more than Consumer and Corporate.</p>
-                    </div>
-                    <div class="thinking-card">
-                        <div class="thinking-num">Counter-Intuition</div>
-                        <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 8px;">Volume ≠ Value</p>
-                        <p style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.5);margin:0;">The most ordered item (Staple Envelope, 47 orders) generated $1,675 in total sales. The highest revenue item (Canon imageCLASS Copier) generated $61,599 from just 5 orders.</p>
-                    </div>
-                </div>
-            </div>
+<section>
+    <div class="max-w grid-12">
+        <div class="col-3">
+            <span class="section-label">01 — Context</span>
         </div>
-    </section>
 
-    <hr class="section-rule">
+        <div class="col-9-start4" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;">
+
+            <!-- LEFT COLUMN -->
+            <div>
+
+                <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;line-height:1.3;margin:0 0 24px;">
+                    Exploring Retail Performance Through Data
+                </h2>
+
+                <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0 0 16px;">
+                    This project analyzes four years of retail sales data from a global superstore using Microsoft Excel. The dataset contains 9,800 transactions across customers, products, shipping methods, and geographic regions.
+                </p>
+
+                <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0;">
+                    The goal was to answer a series of business questions through pivot table analysis while following additional questions that emerged throughout the investigation.
+                </p>
+
+                <div style="margin-top:32px;">
+
+                    <p style="font-size:0.75rem;font-weight:500;color:rgba(14,14,14,0.4);margin:0 0 12px;">
+                        Business Questions
+                    </p>
+
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+
+                        <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;">
+                            <span style="color:var(--red);">—</span>
+                            Which state has the highest sales?
+                        </li>
+
+                        <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;">
+                            <span style="color:var(--red);">—</span>
+                            Which products lead in order count and revenue?
+                        </li>
+
+                        <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;">
+                            <span style="color:var(--red);">—</span>
+                            Which customer segment generates the greatest business value?
+                        </li>
+
+                        <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;">
+                            <span style="color:var(--red);">—</span>
+                            Are there recurring seasonal patterns and year-on-year growth?
+                        </li>
+
+                        <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;">
+                            <span style="color:var(--red);">—</span>
+                            Does shipping mode affect delivery time?
+                        </li>
+
+                        <li style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.55);display:flex;gap:8px;">
+                            <span style="color:var(--red);">—</span>
+                            How do product categories compare by order volume and revenue?
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div style="display:flex;flex-direction:column;gap:24px;">
+
+                <div class="thinking-card">
+
+                    <div class="thinking-num">
+                        Dataset
+                    </div>
+
+                    <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 8px;">
+                        9,800 Retail Transactions
+                    </p>
+
+                    <p style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.5);margin:0;">
+                        Four years of retail sales data (2015–2018) covering customers, products, shipping methods, and regional performance across the United States.
+                    </p>
+
+                </div>
+
+                <div class="thinking-card">
+
+                    <div class="thinking-num">
+                        Approach
+                    </div>
+
+                    <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 8px;">
+                        Question-Driven Analysis
+                    </p>
+
+                    <p style="font-size:0.75rem;font-weight:300;color:rgba(14,14,14,0.5);margin:0;">
+                        Each business question was answered using Excel pivot tables before drilling deeper into customer segments, seasonal trends, shipping performance, and product value as new insights emerged.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
 
     <!-- APPROACH -->
     <section class="section-dark">
@@ -194,7 +260,7 @@
                         Start With a Question. <span class="text-accent" style="font-style:italic;">Follow the Answer.</span>
                     </h2>
                     <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(240,244,245,0.45);margin:0;">
-                        Rather than building a comprehensive dashboard upfront, I started with 3 questions and let each finding generate the next one — a more honest reflection of how real analysis actually works.
+                        Rather than building a comprehensive dashboard upfront, I started with 3 questions and let each finding generate the next one a more honest reflection of how real analysis actually works.
                     </p>
                 </div>
             </div>
@@ -202,7 +268,7 @@
                 <div class="step-cell">
                     <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 01</span>
                     <h4 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 12px;">Identify the Columns</h4>
-                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">Before touching any formula, I mapped each question to the columns it needed. A small step that prevents a common mistake — using Order ID as a proxy for sales when the Sales column exists.</p>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">Before touching any formula, I mapped each question to the columns it needed. A small step that prevents a common mistake using Order ID as a proxy for sales when the Sales column exists.</p>
                 </div>
                 <div class="step-cell">
                     <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 02</span>
@@ -212,12 +278,12 @@
                 <div class="step-cell">
                     <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 03</span>
                     <h4 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 12px;">Follow the Curiosity</h4>
-                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">California kept appearing as the top state. The segment with the fewest orders turned out to spend the most per order. Every finding raised a new question — and I followed each one.</p>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">California kept appearing as the top state. The segment with the fewest orders turned out to spend the most per order. Every finding raised a new question and I followed each one.</p>
                 </div>
                 <div class="step-cell">
                     <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:16px;">Step 04</span>
                     <h4 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.25rem;margin:0 0 12px;">Drill Into Home Office</h4>
-                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">Once Home Office stood out, I broke it down further — by state, by product, and by shipping preference — to understand not just that it was valuable, but where and how to act on it.</p>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.7;color:rgba(240,244,245,0.4);margin:0;">Once Home Office stood out, I broke it down further by state, by product, and by shipping preference to understand not just that it was valuable, but where and how to act on it.</p>
                 </div>
             </div>
         </div>
@@ -237,7 +303,7 @@
                     <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:12px;">01 / State Sales Analysis</span>
                     <h4 style="font-size:1.125rem;font-weight:600;margin:0 0 12px;">California vs the rest of the country</h4>
                     <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0 0 16px;">
-                        Pivot table: State × Sum of Sales, sorted descending. California came in at $446,306 — North Dakota at $919. A 485x difference. The Corporate segment alone in California ($144,731) outpaced North Dakota's entire sales figure, confirming that business presence, not just population, drives the gap.
+                        Pivot table: State × Sum of Sales, sorted descending. California came in at $446,306, North Dakota at $919. A 485x difference. The Corporate segment alone in California ($144,731) outpaced North Dakota's entire sales figure, confirming that business presence, not just population, drives the gap.
                     </p>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
                         <span class="tag">State</span>
@@ -263,7 +329,7 @@
                     <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:12px;">03 / Segment Analysis</span>
                     <h4 style="font-size:1.125rem;font-weight:600;margin:0 0 12px;">The smallest segment spends the most</h4>
                     <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0 0 16px;">
-                        Consumer: 5,101 orders, $1,148,060 total. Home Office: 1,746 orders, $424,982 total. On totals alone, Consumer wins by a wide margin. But dividing sales by orders revealed a different story — Home Office averages $243 per order vs Consumer's $225. The segment with the least volume has the highest value per transaction.
+                        Consumer: 5,101 orders, $1,148,060 total. Home Office: 1,746 orders, $424,982 total. On totals alone, Consumer wins by a wide margin. But dividing sales by orders revealed a different story Home Office averages $243 per order vs Consumer's $225. The segment with the least volume has the highest value per transaction.
                     </p>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
                         <span class="tag">Segment</span>
@@ -301,7 +367,7 @@
                 </div>
                 <div class="col-7">
                     <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;margin:0 0 16px;">Four Charts. Four Questions Answered.</h2>
-                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.55);margin:0;">Each chart was built to answer one specific question — not to fill a dashboard. The combo chart for segment analysis carries the most analytical weight, showing both order volume and revenue on one view.</p>
+                    <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.55);margin:0;">Each chart was built to answer one specific question not to fill a dashboard. The combo chart for segment analysis carries the most analytical weight, showing both order volume and revenue on one view.</p>
                 </div>
             </div>
 
@@ -316,12 +382,12 @@
                 <div class="feature-cell">
                     <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:12px;">Chart 02</span>
                     <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 8px;">Top Items by Order Count</h4>
-                    <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">Horizontal bar of the top 6 most ordered products. Staples and staple-adjacent products dominate volume — none of them appear in the revenue chart.</p>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">Horizontal bar of the top 6 most ordered products. Staples and staple-adjacent products dominate volume none of them appear in the revenue chart.</p>
                 </div>
                 <div class="feature-cell">
                     <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:12px;">Chart 03 + 04</span>
                     <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 8px;">Revenue Leaders & Segment Combo</h4>
-                    <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">Canon Copier stands alone in the revenue chart. The combo chart overlays order count (bar) and total sales (line) per segment — making the Home Office insight immediately visible.</p>
+                    <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">Canon Copier stands alone in the revenue chart. The combo chart overlays order count (bar) and total sales (line) per segment making the Home Office insight immediately visible.</p>
                 </div>
             </div>
         </div>
@@ -343,7 +409,7 @@
                         <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:24px;">Geography</span>
                         <h3 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.5rem;margin:0 0 20px;line-height:1.3;">California shows up everywhere.</h3>
                         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;">
-                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Highest total sales at $446,306 — 485x more than North Dakota's $919</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Highest total sales at $446,306 485x more than North Dakota's $919</li>
                             <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Corporate segment in California alone ($144,731) exceeds North Dakota's full sales</li>
                             <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Top state for Home Office customers specifically, with 325 orders</li>
                             <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Business density, not just population, explains the gap</li>
@@ -353,10 +419,10 @@
                         <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:24px;">Segments & Products</span>
                         <h3 style="font-family:'DM Serif Display',serif;font-style:italic;font-size:1.5rem;margin:0 0 20px;line-height:1.3;">The obvious metric isn't always the right one.</h3>
                         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;">
-                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Consumer has 5,101 orders vs Home Office's 1,746 — but Home Office averages $243/order vs $225</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Consumer has 5,101 orders vs Home Office's 1,746 but Home Office averages $243/order vs $225</li>
                             <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Staple Envelope: 47 orders, $1,675 total. Canon Copier: 5 orders, $61,599 total</li>
                             <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Home Office prefers Standard Class shipping (1,046 orders vs 112 Same Day)</li>
-                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Most ordered Home Office product: Easy-staple Paper — a recurring consumable, not a one-time purchase</li>
+                            <li style="font-size:0.75rem;font-weight:300;color:rgba(240,244,245,0.5);display:flex;gap:8px;"><span style="color:var(--red);flex-shrink:0;">—</span>Most ordered Home Office product: Easy-staple Paper a recurring consumable, not a one-time purchase</li>
                         </ul>
                     </div>
                 </div>
@@ -376,15 +442,15 @@
                 <div class="outcomes-grid" style="margin-bottom:64px;">
                     <div class="outcome-stat">
                         <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:3rem;display:block;margin-bottom:12px;">$243</span>
-                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">average order value for the Home Office segment — the highest of all three, despite being the smallest by order volume.</p>
+                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">average order value for the Home Office segment the highest of all three, despite being the smallest by order volume.</p>
                     </div>
                     <div class="outcome-stat">
                         <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:3rem;display:block;margin-bottom:12px;">37×</span>
-                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">more revenue from one Canon Copier sale than one Staple Envelope order — the clearest illustration of why order count and revenue need to be tracked separately.</p>
+                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">more revenue from one Canon Copier sale than one Staple Envelope order the clearest illustration of why order count and revenue need to be tracked separately.</p>
                     </div>
                     <div class="outcome-stat">
                         <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:3rem;display:block;margin-bottom:12px;">CA</span>
-                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">the single state that appears at the top across total sales, segment breakdowns, and Home Office drill-downs — a consistent signal worth acting on.</p>
+                        <p style="font-size:0.75rem;font-weight:300;line-height:1.6;color:rgba(14,14,14,0.5);margin:0;">the single state that appears at the top across total sales, segment breakdowns, and Home Office drill-downs a consistent signal worth acting on.</p>
                     </div>
                 </div>
             </div>
@@ -402,10 +468,10 @@
             <div class="col-8">
                 <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;margin:0 0 24px;">What the Store Should Do With This</h2>
                 <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0 0 16px;">
-                    Although the Consumer segment dominates in order volume and total revenue, the Home Office segment is worth closer attention — its customers spend more per order on average. The store could benefit from focusing retention and marketing efforts on Home Office customers, particularly in California.
+                    Although the Consumer segment dominates in order volume and total revenue, the Home Office segment is worth closer attention its customers spend more per order on average. The store could benefit from focusing retention and marketing efforts on Home Office customers, particularly in California.
                 </p>
                 <p style="font-size:0.875rem;font-weight:300;line-height:1.8;color:rgba(14,14,14,0.58);margin:0;">
-                    Standard Class shipping is the clear preference for Home Office — ensuring it remains reliable and well-stocked is a low-effort way to protect the segment's satisfaction. And given that California consistently leads across every dimension of this analysis, any geographic campaign should start there.
+                    Standard Class shipping is the clear preference for Home Office ensuring it remains reliable and well-stocked is a low-effort way to protect the segment's satisfaction. And given that California consistently leads across every dimension of this analysis, any geographic campaign should start there.
                 </p>
             </div>
         </div>
@@ -439,7 +505,7 @@
                     <div class="thinking-card">
                         <div class="reflection-tag">Lesson 04</div>
                         <h4 style="font-size:0.875rem;font-weight:600;margin:0 0 12px;">Simple tools are enough to find real insight</h4>
-                        <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0;">This entire analysis used pivot tables and basic arithmetic. The insight wasn't hidden in a complex model — it was in asking the right question and looking at the answer from a different angle.</p>
+                        <p style="font-size:0.875rem;font-weight:300;line-height:1.7;color:rgba(14,14,14,0.55);margin:0;">This entire analysis used pivot tables and basic arithmetic. The insight wasn't hidden in a complex model it was in asking the right question and looking at the answer from a different angle.</p>
                     </div>
                 </div>
             </div>
